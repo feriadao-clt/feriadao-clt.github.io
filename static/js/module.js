@@ -27,7 +27,7 @@ const holidays = function(evt) {
                   nextDay:"[amanhã]", 
                   lastWeek: function(now) { return `${this.day() % 6 ? "[Último]" : "[Última]"} dddd` },
                   nextWeek: function(now) { return `${this.day() % 6 ? "[Próximo]" : "[Próxima]" } dddd` },
-                  sameElse: function(now) { return ` [${this.from(now)}]` }
+                  sameElse: function(now) { return `[${this.from(now)}]` }
                 })}
               </time>
             </small>
