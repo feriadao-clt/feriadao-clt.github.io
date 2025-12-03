@@ -43,7 +43,7 @@ const holidays = function(evt) {
       </div>`);
     });
     
-    el.append('<p class="text-end opacity-75 py-3"><span class="border border-end-0 rounded-start-pill ps-3 py-2">Powered by <a title="@delvani.js" class="text-decoration-none" href="https://www.instagram.com/delvani.js"><strong>Delvani</strong></a></span></p>');
+    el.append('<p class="text-end opacity-75 py-3"><span class="border border-2 border-end-0 rounded-start-pill ps-3 py-2">Powered by <a title="@delvani.js" class="text-decoration-none" href="https://www.instagram.com/delvani.js"><strong>Delvani</strong></a></span></p>');
     $("[data-holidays]").html(el);
     ($(window).scrollTop() && $(window).scrollTop(0));
     ($("#loader").length && $("#loader").fadeOut(function() { $(this).remove() }));
