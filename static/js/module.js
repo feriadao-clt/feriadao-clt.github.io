@@ -1,6 +1,5 @@
 import feriadosNacionais from "./mod/feriados-nacionais.js";
 
-let HideLoader = true;
 const holidays = function(evt) {
   let m, el = $(document.createElement("div")),
     DateString = moment().startOf("day").format();
@@ -18,20 +17,26 @@ const holidays = function(evt) {
         </div>
         
         <div class="text-center w-100 px-3">
-          <div class="text-truncate-2"><h5 class="m-0">${feriado.nome}</h5></div>
-          <div class="text-${m.isBefore(DateString) ? "secondary" : `${m.isAfter(DateString) ? "success" : "danger"}`}">
-            <small data-calendar>
-              <time datetime="${feriado.data}">
-                ${m.calendar({
-                  lastDay:"[ontem]",
-                  sameDay:"[hoje]",
-                  nextDay:"[amanhã]", 
-                  lastWeek: function(now) { return `${this.day() % 6 ? "[Última]" : "[Último]"} dddd` },
-                  nextWeek: function(now) { return `${this.day() % 6 ? "[Próxima]" : "[Próximo]" } dddd` },
-                  sameElse: function(now) { return `[${this.from(now)}]` }
-                })}
-              </time>
-            </small>
+          <div class="position-relative">
+            <div class="text-truncate-2"><h5 class="m-0">${feriado.nome}</h5></div>
+            <div class="text-${m.isBefore(DateString) ? "secondary" : `${m.isAfter(DateString) ? "success" : "danger"}`}">
+              <small data-calendar>
+                <time datetime="${feriado.data}">
+                  ${m.calendar({
+                    lastDay:"[ontem]",
+                    sameDay:"[hoje]",
+                    nextDay:"[amanhã]", 
+                    lastWeek: function(now) { return `${this.day() % 6 ? "[Última]" : "[Último]"} dddd` },
+                    nextWeek: function(now) { return `${this.day() % 6 ? "[Próxima]" : "[Próximo]" } dddd` },
+                    sameElse: function(now) { return `[${this.from(now)}]` }
+                  })}
+                </time>
+              </small>
+            </div>
+          
+            <div class="position-absolute bottom-0 end-0">
+              ${m.isBefore(DateString) || m.isSame(DateString) ? '<span class="text-primary"><i class="bi bi-check2-all"></i></span>' : '<span class="text-secondary"><i class="bi bi-clock-history"></i></span>'}
+            </div>
           </div>
         </div>
       </div>`);
