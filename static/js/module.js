@@ -1,5 +1,6 @@
 import feriadosNacionais from "./mod/feriados-nacionais.js";
 
+let HideLoader = true;
 const holidays = function(evt) {
   let m, el = $(document.createElement("div")),
     DateString = moment().startOf("day").format();
@@ -25,8 +26,8 @@ const holidays = function(evt) {
                   lastDay:"[ontem]",
                   sameDay:"[hoje]",
                   nextDay:"[amanhã]", 
-                  lastWeek: function(now) { return `${this.day() % 6 ? "[Último]" : "[Última]"} dddd` },
-                  nextWeek: function(now) { return `${this.day() % 6 ? "[Próximo]" : "[Próxima]" } dddd` },
+                  lastWeek: function(now) { return `${this.day() % 6 ? "[Última]" : "[Último]"} dddd` },
+                  nextWeek: function(now) { return `${this.day() % 6 ? "[Próxima]" : "[Próximo]" } dddd` },
                   sameElse: function(now) { return `[${this.from(now)}]` }
                 })}
               </time>
@@ -37,9 +38,8 @@ const holidays = function(evt) {
     });
     
     $("[data-holidays]").html(el);
-    $(window).scrollTop(0);
-    
-    if ($("#loader").is(":visible")) $("#loader").fadeOut();
+    ($(window).scrollTop() && $(window).scrollTop(0));
+    ($("#loader").length && $("#loader").fadeOut(function() { $(this).remove() }));
   });
 };
 
