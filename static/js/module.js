@@ -5,6 +5,8 @@ const holidays = function(evt) {
   let m, el = $(document.createElement("div")),
     DateString = moment().startOf("day").format();
   
+  document.title = $(this).find(":selected").text();
+  
   feriadosNacionais(this.value).then(feriados => {
     feriados.forEach(feriado => {
       m = moment(feriado.data);
@@ -55,7 +57,7 @@ $(window).on("load", function(evt) {
   
   for (let i = 1900; i < 2200; i++) {
     $("[data-select]").append(
-      `<option value="${i}"${i === moment().year() ? " selected":""}>Feriados em ${i}</option>`
+      `<option value="${i}"${i === moment().year() ? " selected":""}>Feriadão CLT ${i}</option>`
     );
   }
   
