@@ -42,6 +42,7 @@ const holidays = function(evt) {
       </div>`);
     });
     
+    el.append('<p class="text-end opacity-75 py-3">Powered by <a title="@delvani.js" class="text-decoration-none" href="https://www.instagram.com/delvani.js"><strong>Delvani</strong></a></p>');
     $("[data-holidays]").html(el);
     ($(window).scrollTop() && $(window).scrollTop(0));
     ($("#loader").length && $("#loader").fadeOut(function() { $(this).remove() }));
