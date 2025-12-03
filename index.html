@@ -26,15 +26,16 @@
 	
 	<title>Feriadão CLT</title>
 	
-	<link rel="stylesheet" href="/static/css/lib/bootstrap.min.css" crossorigin="anonymous">
-	<link rel="stylesheet" href="/static/css/lib/bootstrap-icons.min.css" crossorigin="anonymous">
-	<link rel="stylesheet" href="/static/css/style.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="static/css/lib/bootstrap.min.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="static/css/lib/bootstrap-icons.min.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="static/css/style.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="static/css/loader.css" crossorigin="anonymous">
 	
-	<link rel="icon" type="image/svg+xml" href="/static/pwa/favicon.svg" crossorigin="anonymous">
-	<link rel="icon" type="image/png" href="/static/pwa/favicon-96x96.png" sizes="96x96" crossorigin="anonymous">
-	<link rel="apple-touch-icon" sizes="180x180" href="/static/pwa/apple-touch-icon.png" crossorigin="anonymous">
+	<link rel="icon" type="image/svg+xml" href="static/pwa/favicon.svg" crossorigin="anonymous">
+	<link rel="icon" type="image/png" href="static/pwa/favicon-96x96.png" sizes="96x96" crossorigin="anonymous">
+	<link rel="apple-touch-icon" sizes="180x180" href="static/pwa/apple-touch-icon.png" crossorigin="anonymous">
 	<link rel="shortcut icon" href="/favicon.ico" crossorigin="anonymous">
-	<link rel="manifest" href="/static/pwa/manifest.json" crossorigin="anonymous">
+	<link rel="manifest" href="static/pwa/manifest.json" crossorigin="anonymous">
 </head>
 
 <body class="text-bg-dark">
@@ -50,11 +51,19 @@
 		</div>
 	</div>
 	
-	<script src="/static/js/lib/jquery.min.js" crossorigin="anonymous"></script>
-	<script src="/static/js/lib/moment-with-locales.min.js" crossorigin="anonymous"></script>
-	<script src="/static/js/lib/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-	<script src="/static/js/module.js" type="module" crossorigin="anonymous"></script>
-	<script src="/static/js/nomodule.js" crossorigin="anonymous" nomodule></script>
+	<div id="loader">
+		<div class="position-fixed top-0 start-0 w-100 h-100" style="z-index: 99999; background-color: rgba(250, 250, 250, 0.9);">
+			<div class="position-absolute top-50 start-50 translate-middle">
+				<div class="loader"></div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="static/js/lib/jquery.min.js" crossorigin="anonymous"></script>
+	<script src="static/js/lib/moment-with-locales.min.js" crossorigin="anonymous"></script>
+	<script src="static/js/lib/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+	<script src="static/js/module.js" type="module" crossorigin="anonymous"></script>
+	<script src="static/js/nomodule.js" crossorigin="anonymous" nomodule></script>
 </body>
 
 </html>

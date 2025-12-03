@@ -12,5 +12,7 @@
       "</div>" +
       "</div>"
     );
+    
+    $("#loader").fadeOut();
   });
 })(this);

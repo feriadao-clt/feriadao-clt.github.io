@@ -38,6 +38,8 @@ const holidays = function(evt) {
     
     $("[data-holidays]").html(el);
     $(window).scrollTop(0);
+    
+    if ($("#loader").is(":visible")) $("#loader").fadeOut();
   });
 };
 
