@@ -1,0 +1,1 @@
+(function() { return (("serviceWorker" in navigator) ? window.addEventListener("load", function(evt) { navigator.serviceWorker.register("/sw.js", { scope: "/" }).then(function(swr) { console.log(swr); }).catch(function(err) { console.error(err); }); }) : ((typeof console === "object") && (console.warn || console.log) || alert).call(null, "ServiceWorker not supported!")); })();

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="title" content="Feriadão CLT">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-title" content="Feriadão CLT">
+  <meta name="description" content="Feriados nacionais (CLT)">
+  <meta name="theme-color" content="#212529">
+  
+  <!-- Facebook Meta Tags -->
+  <meta property="og:url" content="https://feriadao-clt.github.io">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Feriadão CLT">
+  <meta property="og:description" content="Feriados nacionais (CLT)">
+  <meta property="og:image" content="https://feriadao-clt.github.io/static/pwa/icon512_maskable.png">
+  
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:domain" content="feriadao-clt.github.io">
+  <meta property="twitter:url" content="https://feriadao-clt.github.io">
+  <meta name="twitter:title" content="Feriadão CLT">
+  <meta name="twitter:description" content="Feriados nacionais (CLT)">
+  <meta name="twitter:image" content="https://feriadao-clt.github.io/static/pwa/icon512_maskable.png">
+  
+  <title>Feriadão CLT</title>
+  
+  <link rel="stylesheet" href="static/css/lib/bootstrap.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/lib/jquery-confirm.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/lib/bootstrap-icons.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/lib/animate.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/lib/snackbar.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/style.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/loader.css" crossorigin="anonymous">
+  
+  <link rel="icon" type="image/svg+xml" href="static/pwa/favicon.svg" crossorigin="anonymous">
+  <link rel="icon" type="image/png" href="static/pwa/favicon-96x96.png" sizes="96x96" crossorigin="anonymous">
+  <link rel="apple-touch-icon" sizes="180x180" href="static/pwa/apple-touch-icon.png" crossorigin="anonymous">
+  <link rel="shortcut icon" href="/favicon.ico" crossorigin="anonymous">
+  <link rel="manifest" href="static/pwa/manifest.json" crossorigin="anonymous">
+  
+  <script nomodule>
+    (function(global) { return global.location.replace("/update-required.html"); })(this);
+  </script>
+</head>
+
+<body class="text-bg-dark overflow-hidden">
+  <div class="container-lg">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="text-bg-dark sticky-top py-3">
+          <div class="row justify-content-center">
+            <div class="col-sm">
+              <select class="form-select text-center fs-3 fw-bold mb-3" aria-label="Selecionar ANO!" data-select="YEAR"></select>
+            </div>
+            
+            <div class="col-sm">
+              <select class="form-select text-center fs-5 fw-bold" aria-label="Selecionar UF!" data-select="UF">
+                <option value="" seleted>Feriados Nacional</option>
+                <optgroup label="Feriados Estadual (UF)" data-name="UF"></optgroup>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div data-holidays></div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="loader" class="">
+    <div class="position-fixed text-bg-dark top-0 start-0 w-100 h-100" style="z-index: 99999;">
+      <div class="position-absolute top-50 start-50 translate-middle">
+        <div class="text-center lh-1">
+          <svg class="rounded-circle mb-3" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="90px" height="90px"><svg width="90px" height="90px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet">
+            
+              <path fill="#d6eef0" d="M0 0h64v64H0z">
+                
+              </path>
+              
+              <circle cx="52" cy="12" r="7" fill="#ffe62e">
+                
+              </circle>
+              
+              <g fill="#ffffff">
+                
+                <path d="M22 7c0 1.1-.9 2-2 2H10c-1.1 0-2-.9-2-2s.9-2 2-2h10c1.1 0 2 .9 2 2">
+                  
+                </path>
+                
+                <path d="M26 9c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2s.9-2 2-2h4c1.1 0 2 .9 2 2">
+                  
+                </path>
+                
+                <path d="M40 12c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2s.9-2 2-2h4c1.1 0 2 .9 2 2">
+                  
+                </path>
+                
+                <path d="M19 19c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2s.9-2 2-2h4c1.1 0 2 .9 2 2">
+                  
+                </path>
+                
+              </g>
+              
+              <path fill="#6adbc6" d="M0 32h64v32H0z">
+                
+              </path>
+              
+              <path d="M64 40s-78.4-.9-46.3 24H64V40z" fill="#ffdd7d">
+                
+              </path>
+              
+              <path d="M39.1 53.2c-.1.5-.6.9-1.2.8c-.5-.1-.9-.6-.8-1.2L41.8 29c.1-.5.6-.9 1.2-.8c.5.1.9.6.8 1.2l-4.7 23.8" fill="#94989b">
+                
+              </path>
+              
+              <path d="M41.6 35.2c3.7.7 3.2 3.6 6.2 4.2c2.9.6 3.6-2.3 7.3-1.6l.8.1c.5 1.4 1.3 1 1.8-.9l.2-.8c1.7-8.6-10.3-12.9-10.3-12.9c-1.7-.9-4.8-1.5-6.8-1.3c0 0-12.8-.4-14.5 8.2l-.2.8c-.3 1.9.3 2.6 1.4 1.5l.8.1c3.7.7 3.2 3.6 6.2 4.2c2.7.6 3.4-2.3 7.1-1.6" fill="#f27a52">
+                
+              </path>
+              
+              <path d="M46.4 25.1l-.3-.1c-.4-.2-.8-.4-1.3-.5c.5 2.9 1.3 7.6 1.8 12.2c.3.4.6.6 1 .6c.6.1.9-.1 1.7-.6c1.1-.7 2.7-1.6 5.3-1.2l.3.1c1.3-6.8-8.4-10.5-8.5-10.5" fill="#f9f3d9">
+                
+              </path>
+              
+              <path d="M41 24h-.3c-.1 0-10.1-.1-11.5 6.7l.3.1c2.5.5 3.5 1.9 4.2 3c.5.8.8 1 1.3 1.1c.5.1.9-.1 1.6-.6c.1 0 .1-.1.2-.1c2.1-3.9 4.4-7.8 5.9-10.2c-.6 0-1.2-.1-1.7 0" fill="#c94747">
+                
+              </path>
+              
+            </svg>
+            <style>
+              @media (prefers-color-scheme: light) {
+                :root {
+                  filter: none;
+                }
+              }
+              
+              @media (prefers-color-scheme: dark) {
+                :root {
+                  filter: none;
+                }
+              }
+            </style>
+          </svg>
+          
+          <h1 class="text-warning fw-bold lh-1 m-0">Feriadão CLT</h1>
+          <p class="fw-bold display-1 text-info">
+            <script>
+              document.write((new Date()).getFullYear());
+            </script>
+          </p>
+          
+          <div class="powered-by animate__animated animate__heartBeat animate__delay-2s small"><span class="opacity-75">Powered by</span> <strong>Delvani</strong>️</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="static/js/lib/snackbar.js" crossorigin="anonymous"></script>
+  <script src="static/js/lib/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="static/js/lib/jquery-confirm.min.js" crossorigin="anonymous"></script>
+  <script src="static/js/lib/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="static/js/lib/moment-with-locales.min.js" crossorigin="anonymous"></script>
+  
+  <script src="static/js/swr.js" crossorigin="anonymous"></script>
+  <script src="static/js/uf.js" crossorigin="anonymous"></script>
+  <script src="static/js/feriadao.clt.js" crossorigin="anonymous"></script>
+  <script src="static/js/jconfirm.defaults.js" crossorigin="anonymous"></script>
+  <script src="static/js/main.js" crossorigin="anonymous"></script>
+</body>
+
+</html>
