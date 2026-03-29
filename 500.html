@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#dc3545">
   <title>You Are Offline!</title>
   <script>
-    (function(global) { return (/500\.html/.test(global.location.pathname) ? global.location.replace("/") : global.location.reload(true)); })(this);
+    (function(global) { return (/500\.html/.test(global.location.pathname) && global.location.replace("/")); })(this);
   </script>
   
   <style type="text/css">
@@ -45,6 +45,20 @@
     <h2>You Are Offline!</h2>
     <small>(NO INTERNET CONNECTION)</small>
   </div>
+  
+  <script>
+    (function(global) {
+      function request() {
+        const url = ".";
+        const opts = { method: "HEAD" };
+        const done = res => res.ok ? global.location.reload(true) : setTimeout(request, 2500);
+        
+        fetch(url, opts).then(done).catch(console.log);
+      }
+      
+      request();
+    })(this)
+  </script>
 </body>
 
 </html>
