@@ -4,17 +4,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Page not found!</title>
-  
+  <meta name="theme-color" content="#ffc107">
+  <title>Page Not Found!</title>
   <script>
     (function(global) { return global.location.replace("/"); })(this);
   </script>
+  
+  <style type="text/css">
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      font-family: "Lucida Console", "Courier New", monospace;
+      color: #212529;
+      background-color: #ffc107;
+    }
+    
+    div {
+      text-align: center;
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      transform: translate(-50%, -40%);
+    }
+    
+    h2 {
+      margin-bottom: 0.25rem;
+    }
+  </style>
 </head>
 
-<body style="color: #aaaaaa; padding: 5em 0 5em 0; background-color: #bb2124;">
-  <h1 style="text-align: center;">
-    <pre><code>PAGE NOT FOUND!</code></pre>
-  </h1>
+<body>
+  <div>
+    <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPgo8c3ZnIGZpbGw9IiMwMDAwMDAiIHdpZHRoPSI4MHB4IiBoZWlnaHQ9IjgwcHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgaWQ9Indhcm5pbmciIGRhdGEtbmFtZT0iRmxhdCBDb2xvciIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBjbGFzcz0iaWNvbiBmbGF0LWNvbG9yIj48Y2lyY2xlIGlkPSJwcmltYXJ5IiBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiIHN0eWxlPSJmaWxsOiByZ2IoMzMsIDM3LCA0MSk7Ij48L2NpcmNsZT48cGF0aCBpZD0ic2Vjb25kYXJ5IiBkPSJNMTEsMTNWN2ExLDEsMCwwLDEsMiwwdjZhMSwxLDAsMCwxLTIsMFptMSwyLjVBMS41LDEuNSwwLDEsMCwxMy41LDE3LDEuNSwxLjUsMCwwLDAsMTIsMTUuNVoiIHN0eWxlPSJmaWxsOiByZ2IoMjU1LCAxOTMsIDcpOyI+PC9wYXRoPjwvc3ZnPg==" alt="Warning" />
+    <h2>Page Not Found!</h2>
+    <small>(ERROR 404)</small>
+  </div>
 </body>
 
 </html>
