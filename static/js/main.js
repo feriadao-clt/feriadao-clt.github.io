@@ -28,7 +28,7 @@ moment.locale(navigator.language);
       done.timeout = setTimeout(holidayStatusWatch, 1000);
     };
     
-    document.title = `Feriadão CLT ${$("[data-select] :selected").val()}`;
+    document.title = "Feriadão CLT " + $('[data-select="YEAR"]').val();
     holidays = holidays.sort((a, b) => moment(b.datetime) - moment().startOf("day"));
     
     holidays.forEach(holiday => {
@@ -79,10 +79,10 @@ moment.locale(navigator.language);
     $(document.body).on("click", "[data-holiday-type]", function(evt) {
       const holidayType = $(this).data("holiday-type");
       
-      if (holidayType === "estadual") $.dialog({ title: "Feriado Estadual", content: "url:/static/txt/feriado_estadual.txt" });
-      else if (holidayType === "nacional") $.dialog({ title: "Feriado Nacional", content: "url:/static/txt/feriado_nacional.txt" });
-      else if (holidayType === "facultativo") $.dialog({ title: "Ponto Facultativo", content: "url:/static/txt/ponto_facultativo.txt" });
-      else if (holidayType === "comemorativa") $.dialog({ title: "Datas Comemorativas", content: "url:/static/txt/datas_comemorativas.txt" });
+      if (holidayType === "estadual") $.dialog({ type: "blue", title: "Feriado Estadual", content: "url:/static/txt/feriado_estadual.txt" });
+      else if (holidayType === "nacional") $.dialog({ type: "blue", title: "Feriado Nacional", content: "url:/static/txt/feriado_nacional.txt" });
+      else if (holidayType === "facultativo") $.dialog({ type: "blue", title: "Ponto Facultativo", content: "url:/static/txt/ponto_facultativo.txt" });
+      else if (holidayType === "comemorativa") $.dialog({ type: "blue", title: "Datas Comemorativas", content: "url:/static/txt/datas_comemorativas.txt" });
       
       return false;
     });
@@ -90,7 +90,7 @@ moment.locale(navigator.language);
     $(".powered-by").on("animationend", () => {
       for (let i = 1900; i < 2200; i++) {
         $('[data-select="YEAR"]').append(
-          `<option value="${i}"${i === moment().year() ? " selected":""}>Feriadão CLT ${i}</option>`
+          `<option value="${i}"${i === moment().year() ? " selected":""}>${i}</option>`
         );
       }
       
