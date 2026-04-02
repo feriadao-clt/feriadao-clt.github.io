@@ -9,18 +9,18 @@ const done = holidays => {
   
   const el = $(document.createElement("div"));
   const datetime = moment().startOf("day").format();
-  const holidayStatus = (datetime) => moment(datetime).calendar({
-    lastDay: `[<div class="position-relative text-danger"><p class="animate__animated animate__heartBeat animate__infinite m-0"><time class="small" datetime="${datetime}">ontem</time></p><span class="position-absolute top-0 end-0"><i class="bi bi-check2-circle"></i></span></div>]`,
-    sameDay: `[<div class="position-relative text-danger"><p class="animate__animated animate__heartBeat animate__infinite m-0"><time class="small" datetime="${datetime}">hoje</time></p><span class="position-absolute top-0 end-0"><i class="bi bi-check2-circle"></i></span></div>]`,
-    nextDay: `[<div class="position-relative text-danger"><p class="animate__animated animate__heartBeat animate__infinite m-0"><time class="small" datetime="${datetime}">amanhã</time></p><span class="position-absolute top-0 end-0"><i class="bi bi-hourglass-split"></i></span></div>]`,
-    lastWeek: function(now) { return `[<div class="position-relative text-secondary"><time class="small" datetime="${datetime}">${ this.day() % 6 ? "Última" : "Último" }] dddd[</time><span class="position-absolute end-0"><i class="bi bi-check2-circle"></i></span></div>]`; },
-    nextWeek: function(now) { return `[<div class="position-relative text-success"><time class="small" datetime="${datetime}">${ this.day() % 6 ? "Próxima" : "Próximo" }] dddd[</time><span class="position-absolute end-0"><i class="bi bi-hourglass-split"></i></span></div>]`; },
-    sameElse: function(now) { now = now.startOf("day"); return `[<div class="position-relative text-${this.isBefore(now)?"secondary":"success"}"><time class="small" datetime="${datetime}">${this.from(now)}</time><span class="position-absolute end-0"><i class="bi bi-${this.isBefore(now)?"check2-circle":"hourglass-split"}"></i></span></div>]`; }
+  const holidayStatus = datetime => moment(datetime).calendar({
+    //lastDay: `[<div class="position-relative text-danger"><p class="animate__animated animate__heartBeat animate__infinite m-0"><time class="small" datetime="${datetime}">ontem</time></p><span class="position-absolute top-0 end-0"><i class="bi bi-check2-circle"></i></span></div>]`,
+    //sameDay: `[<div class="position-relative text-danger"><p class="animate__animated animate__heartBeat animate__infinite m-0"><time class="small" datetime="${datetime}">hoje</time></p><span class="position-absolute top-0 end-0"><i class="bi bi-check2-circle"></i></span></div>]`,
+    nextDay: `[<div class="position-relative text-bg-danger overflow-hidden"><div class="text-bg-dark animate__animated animate__heartBeat animate__infinite m-0"><span class="small" datetime="${datetime}">amanhã</span></div><div class="position-absolute top-0 end-0"><i class="bi bi-hourglass-split"></i></div></div>]`,
+    //lastWeek: function(now) { return `[<div class="position-relative text-secondary"><time class="small" datetime="${datetime}">${ this.day() % 6 ? "Última" : "Último" }] dddd[</time><span class="position-absolute end-0"><i class="bi bi-check2-circle"></i></span></div>]`; },
+    //nextWeek: function(now) { return `[<div class="position-relative text-success"><time class="small" datetime="${datetime}">${ this.day() % 6 ? "Próxima" : "Próximo" }] dddd[</time><span class="position-absolute end-0"><i class="bi bi-hourglass-split"></i></span></div>]`; },
+    //sameElse: function(now) { now = now.startOf("day"); return `[<div class="position-relative text-${this.isBefore(now)?"secondary":"success"}"><time class="small" datetime="${datetime}">${this.from(now)}</time><span class="position-absolute end-0"><i class="bi bi-${this.isBefore(now)?"check2-circle":"hourglass-split"}"></i></span></div>]`; }
   });
   
   const holidayStatusWatch = () => {
     $(".holiday-status div").each(function(i) {
-      $(this).replaceWith(holidayStatus($(this).find("time").attr("datetime")));
+      $(this).replaceWith(holidayStatus($(this).find("[datetime]").attr("datetime")));
     });
     
     done.timeout = setTimeout(holidayStatusWatch, 1000);
