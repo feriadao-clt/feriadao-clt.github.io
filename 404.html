@@ -1,51 +1,74 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#ffc107">
-  <title>Page Not Found!</title>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f0ad4e" />
+  
+  <noscript>
+    <meta http-equiv="refresh" content="0;/static/page/warning/noscript" />
+  </noscript>
+  
   <script type="text/javascript">
     (function(global) { return global.location.replace("/"); })(this);
   </script>
   
-  <style type="text/css">
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      position: relative;
-      font-family: "Lucida Console", "Courier New", monospace;
-      color: #212529;
-      background-color: #ffc107;
-    }
-    
-    div.container {
-      text-align: center;
-      position: fixed;
-      top: 40%;
-      left: 50%;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      transform: translate(-50%, -40%);
-    }
-    
-    h2.title {
-      line-height: 1;
-      margin-bottom: 0.25rem;
-    }
-  </style>
+  <link rel="icon" href="static/svg/warning-circle.svg" crossorigin="anonymous">
+  
+  <!-- Bootstrap core CSS -->
+  <link href="static/legacy-browser-support/vendor/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="static/legacy-browser-support/vendor/css/ie10-viewport-bug-workaround.css" rel="stylesheet" crossorigin="anonymous">
+  
+  <!-- Custom styles for this template -->
+  <link href="static/page/warning/static/css/style.css" rel="stylesheet" crossorigin="anonymous">
+  
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script type="text/javascript" src="static/legacy-browser-support/vendor/js/ie8-responsive-file-warning.js" crossorigin="anonymous"></script><![endif]-->
+  <script type="text/javascript" src="static/legacy-browser-support/vendor/js/ie-emulation-modes-warning.js" crossorigin="anonymous"></script>
+  
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script type="text/javascript" src="static/legacy-browser-support/vendor/js/html5shiv.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="static/legacy-browser-support/vendor/js/respond.min.js" crossorigin="anonymous"></script>
+  <![endif]-->
+  
+  <title>Page Not Found!</title>
 </head>
 
 <body>
-  <div class="container">
-    <img class="icon" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPgo8c3ZnIGZpbGw9IiMwMDAwMDAiIHdpZHRoPSI4MHB4IiBoZWlnaHQ9IjgwcHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgaWQ9Indhcm5pbmciIGRhdGEtbmFtZT0iRmxhdCBDb2xvciIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBjbGFzcz0iaWNvbiBmbGF0LWNvbG9yIj48Y2lyY2xlIGlkPSJwcmltYXJ5IiBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiIHN0eWxlPSJmaWxsOiByZ2IoMzMsIDM3LCA0MSk7Ij48L2NpcmNsZT48cGF0aCBpZD0ic2Vjb25kYXJ5IiBkPSJNMTEsMTNWN2ExLDEsMCwwLDEsMiwwdjZhMSwxLDAsMCwxLTIsMFptMSwyLjVBMS41LDEuNSwwLDEsMCwxMy41LDE3LDEuNSwxLjUsMCwwLDAsMTIsMTUuNVoiIHN0eWxlPSJmaWxsOiByZ2IoMjU1LCAxOTMsIDcpOyI+PC9wYXRoPjwvc3ZnPg==" alt="Warning" />
-    <h2 class="title">Page Not Found!</h2>
-    <div class="summary">(ERROR 404)</div>
+  
+  <div class="site-wrapper">
+    <div class="site-wrapper-inner">
+      <div class="cover-container">
+        <img class="icon" src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiB3aWR0aD0iOTBweCIgaGVpZ2h0PSI5MHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGlkPSJ3YXJuaW5nIiBkYXRhLW5hbWU9IkZsYXQgQ29sb3IiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgY2xhc3M9Imljb24gZmxhdC1jb2xvciI+CiAgICAgIDxjaXJjbGUgaWQ9InByaW1hcnkiIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIgc3R5bGU9ImZpbGw6IHJnYigyNTUsIDE5MywgNyk7Ij48L2NpcmNsZT4KICAgICAgPHBhdGggaWQ9InNlY29uZGFyeSIgZD0iTTExLDEzVjdhMSwxLDAsMCwxLDIsMHY2YTEsMSwwLDAsMS0yLDBabTEsMi41QTEuNSwxLjUsMCwxLDAsMTMuNSwxNywxLjUsMS41LDAsMCwwLDEyLDE1LjVaIiBzdHlsZT0iZmlsbDogcmdiKDMzLCAzNywgNDEpOyI+PC9wYXRoPgogICAgPC9zdmc+" alt="Warning" />
+        
+        <h1 class="cover-heading">Page Not Found!</h1>
+        
+        <noscript>
+          <p class="small">
+            Warning: Your browser does not support Javascript or it has been disabled in your browser settings.
+          </p>
+        </noscript>
+        
+        <p class="lead">
+          Sorry, the page you are looking for does not exist or has been moved. You can return to our <a href="/">Homepage</a>.
+        </p>
+      </div>
+    </div>
   </div>
+  
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="static/legacy-browser-support/vendor/js/jquery.min.js" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="static/legacy-browser-support/vendor/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script type="text/javascript" src="static/legacy-browser-support/vendor/js/ie10-viewport-bug-workaround.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
