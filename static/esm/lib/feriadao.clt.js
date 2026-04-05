@@ -105,7 +105,7 @@ const holidays = async function(year, ...stateCodes) {
       
       data.push({
         // Véspera de 21 de Abril ("Tiradentes") …
-        evento: "20 de Abril",
+        evento: "20 de abril",
         tipo: "facultativo",
         observacao: "Ponto Facultativo",
         datetime: `${year}-04-20T00:00:00`

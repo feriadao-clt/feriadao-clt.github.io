@@ -39,6 +39,7 @@
   <link rel="stylesheet" href="static/css/lib/snackbar.min.css" crossorigin="anonymous">
   <link rel="stylesheet" href="static/css/style.css" crossorigin="anonymous">
   <link rel="stylesheet" href="static/css/loader.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/progress-bar-indeterminate.css" crossorigin="anonymous">
   
   <link rel="icon" type="image/svg+xml" href="static/pwa/favicon.svg" crossorigin="anonymous">
   <link rel="icon" type="image/png" href="static/pwa/favicon-96x96.png" sizes="96x96" crossorigin="anonymous">
@@ -168,7 +169,13 @@
             </script>
           </p>
           
-          <div class="powered-by animate__animated animate__heartBeat animate__delay-2s small"><span class="opacity-75">Powered by</span> <strong>Delvani</strong>️</div>
+          <div class="powered-by animate__animated animate__heartBeat animate__delay-2s small mb-3"><span class="opacity-75">Powered by</span> <strong>Delvani</strong>️</div>
+          
+          <div class="progress-bar-container">
+            <div class="progress-bar">
+              <div class="progress-bar-value"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -176,6 +183,8 @@
   
   <script src="static/js/lib/snackbar.js" crossorigin="anonymous"></script>
   <script src="static/js/lib/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="static/js/lib/download.min.js" crossorigin="anonymous"></script>
+  <script src="static/js/lib/html-to-image.js" crossorigin="anonymous"></script>
   <script src="static/js/lib/jquery-confirm.min.js" crossorigin="anonymous"></script>
   <script src="static/js/lib/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   <script src="static/js/lib/moment-with-locales.min.js" crossorigin="anonymous"></script>
