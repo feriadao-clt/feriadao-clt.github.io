@@ -88,6 +88,7 @@ const fnHolidays = function(evt) {
 $(window).on("load", function(evt) {
   moment.locale(navigator.language);
   import("./helpers/swr.js");
+  import("./helpers/author.js");
   import("./helpers/share-file.js");
   import("./helpers/holidays.faq.js");
   
