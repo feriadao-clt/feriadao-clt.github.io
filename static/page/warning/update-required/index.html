@@ -12,8 +12,10 @@
     <meta http-equiv="refresh" content="0; url=/static/page/warning/noscript" />
   </noscript>
   
+  <script src="/static/lib/js/navigator.supports.js" crossorigin="anonymous"></script>
+  
   <script type="text/javascript">
-    (function(script) { return ((script.noModule === false) && window.location.replace("/")); })(document.createElement("script"));
+    (function(global) { return navigator.supports.ESM && window.location.replace("/"); })(this);
   </script>
   
   <link rel="icon" href="../../../svg/warning-circle.svg" crossorigin="anonymous">
@@ -41,7 +43,6 @@
 </head>
 
 <body>
-  
   <div class="site-wrapper">
     <div class="site-wrapper-inner">
       <div class="cover-container">

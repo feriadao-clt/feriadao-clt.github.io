@@ -1,4 +1,3 @@
-//import feriadosNacionais from "./feriadao.clt.js";
 import UF from "./lib/uf.js";
 import logger from "./lib/logger.js";
 import feriadosNacionais from "./lib/feriadao.clt.js";
@@ -67,7 +66,7 @@ const done = holidays => {
   //holidaysCreateLayout("last", lastHolidays);
   
   $("[data-holidays]").html(
-    holidaysCreateLayout(null,holidays.sort((a, b) => moment(b.datetime) - moment().startOf("day"))).addClass("row row-cols-sm-2")
+    holidaysCreateLayout(null, holidays.sort((a, b) => moment(b.datetime) - moment().startOf("day"))).addClass("row row-cols-sm-2")
   );
   
   $(window).scrollTop() && $(window).scrollTop(0);
