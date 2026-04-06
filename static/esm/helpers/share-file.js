@@ -18,9 +18,9 @@ if (navigator.supports.share) {
         text: $(this).data("title"),
         title: document.title,
         files: [new File([blob], blob.type.split("/").join("."), { type: blob.type })],
-      }).catch(failure)
+      }).catch(failure);
     }).catch(failure);
   });
 } else logger.warn("Web Share API not supported.");
 
-export default null
+export default null;
