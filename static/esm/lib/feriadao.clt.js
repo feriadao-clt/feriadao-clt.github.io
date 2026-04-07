@@ -1,25 +1,16 @@
-/**
- * @param {number} year - e.g., 2024
- * @param {number} month - 0-indexed (0 = Jan, 3 = Apr)
- * @param {number} nth - e.g., 2 for the second occurrence
- * @param {number} weekday - 0 (Sun) to 6 (Sat)
- */
-
 const locale = navigator.language;
 const helpers = {
+  // object Date
   date() { return new Date(...arguments); },
-  
-  // Date helpers
-  addDays(date, days) { return new Date(date.setDate(date.getDate() + days)); },
-  
-  // Date helpers
-  yyyymmdd(date) { return [date.getFullYear(), ('0' + (date.getMonth() + 1)).slice(-2), ('0' + date.getDate()).slice(-2)].join("-"); },
   
   // Parser year
   yearParse(year) {
-    const rgx = /^(19\d\d|2[01]\d\d)$/;
-    return rgx.test(year) ? Number(year) : new Error('Ano fora do intervalo suportado: 1900 … 2199');
+    if (!/^(19\d\d|2[01]\d\d)$/.test(year)) throw new Error('Ano fora do intervalo suportado: 1900 … 2199');
+    return +year;
   },
+  
+  // Date helpers
+  dateFormat(date, options) { return date.toLocaleDateString(locale, options); },
   
   // Date helpers
   getISODate(date, only) {
@@ -31,27 +22,27 @@ const helpers = {
   },
   
   // Date helpers
-  dateWeekRange(year, month, weekday, times) {
+  dateAddDays(date, days) { return new Date(date.setDate(date.getDate() + days)); },
+  
+  // Date helpers
+  dateWeekRange(year, month, w, x) {
     let i = 0;
+    let l = Math.ceil(helpers.date(year, month + 1, 0).getDate() / 7);
     let self = helpers.date(year, month, 1);
     const date = helpers.date(self);
     
+    w = (/^[0-6]$/.test(w) ? w : self = helpers.date(NaN));
+    x = ((x === -1) ? --l : (/^\d+$/.test(x) ? ((x === 0) ? l : Math.min(x, l)) : self = helpers.date(NaN)));
+    
+    if (isNaN(self)) return self;
+    
     while (date.getMonth() === month) {
-      if (date.getDay() === weekday) self = helpers.date(date), i++;
-      if (i === times) break;
-      else date.setDate(date.getDate() + 1);
+      if (date.getDay() === w) self = helpers.date(date), i++;
+      if (x > i) date.setDate(date.getDate() + 1);
+      else break;
     }
     
     return self;
-  },
-  
-  
-  // Date helpers
-  dayAndMonthFormat(date) {
-    return date.toLocaleDateString(locale, {
-      day: "numeric",
-      month: "long"
-    })
   },
   
   // Array.sort
@@ -222,7 +213,7 @@ const holidays = async function(year, ...stateCodes) {
         // 48 dias antes ao "Domingo de Páscoa" …
         tipo: "facultativo",
         observacao: "Ponto Facultativo",
-        datetime: helpers.getISODate(helpers.addDays(helpers.getEasterSundayDate(year), -48))
+        datetime: helpers.getISODate(helpers.dateAddDays(helpers.getEasterSundayDate(year), -48))
       });
       
       data.push({
@@ -230,7 +221,7 @@ const holidays = async function(year, ...stateCodes) {
         // 47 dias antes ao "Domingo de Páscoa" …
         tipo: "facultativo",
         observacao: "Ponto Facultativo",
-        datetime: helpers.getISODate(helpers.addDays(helpers.getEasterSundayDate(year), -47))
+        datetime: helpers.getISODate(helpers.dateAddDays(helpers.getEasterSundayDate(year), -47))
       });
       
       data.push({
@@ -238,7 +229,7 @@ const holidays = async function(year, ...stateCodes) {
         // 46 dias antes ao "Domingo de Páscoa" …
         tipo: "facultativo",
         observacao: "Ponto Facultativo (até as 14 horas)",
-        datetime: helpers.getISODate(helpers.addDays(helpers.getEasterSundayDate(year), -46))
+        datetime: helpers.getISODate(helpers.dateAddDays(helpers.getEasterSundayDate(year), -46))
       });
       
       data.push({
@@ -246,7 +237,7 @@ const holidays = async function(year, ...stateCodes) {
         // 2 dias antes ao "Domingo de Páscoa" …
         tipo: "nacional",
         observacao: "Feriado Nacional",
-        datetime: helpers.getISODate(helpers.addDays(helpers.getEasterSundayDate(year), -2))
+        datetime: helpers.getISODate(helpers.dateAddDays(helpers.getEasterSundayDate(year), -2))
       });
       
       data.push({
@@ -263,15 +254,18 @@ const holidays = async function(year, ...stateCodes) {
         // 60 dias após "Domingo de Páscoa" …
         tipo: "facultativo",
         observacao: "Ponto Facultativo",
-        datetime: helpers.getISODate(helpers.addDays(helpers.getEasterSundayDate(year), 60))
+        datetime: helpers.getISODate(helpers.dateAddDays(helpers.getEasterSundayDate(year), 60))
       });
       
       data.push({
         // Dia seguinte após "Corpus Christi" …
         tipo: "facultativo",
         observacao: "Ponto Facultativo",
-        datetime: helpers.getISODate(helpers.addDays(helpers.getEasterSundayDate(year), 61)),
-        evento: helpers.dayAndMonthFormat(helpers.addDays(helpers.getEasterSundayDate(year), 61)),
+        datetime: helpers.getISODate(helpers.dateAddDays(helpers.getEasterSundayDate(year), 61)),
+        evento: helpers.dateFormat(helpers.dateAddDays(helpers.getEasterSundayDate(year), 61), {
+          day: "numeric",
+          month: "long"
+        }),
       });
       
       data.push({
@@ -677,7 +671,7 @@ const holidays = async function(year, ...stateCodes) {
         evento: "Dia de Nossa Senhora da Penha, padroeira do estado (Data Magna)",
         tipo: "estadual",
         observacao: "Feriado Estadual",
-        datetime: helpers.getISODate(helpers.addDays(helpers.getEasterSundayDate(year), 8))
+        datetime: helpers.getISODate(helpers.dateAddDays(helpers.getEasterSundayDate(year), 8))
         // 8 dias após o "Domingo de Páscoa"
       });
       
@@ -687,7 +681,7 @@ const holidays = async function(year, ...stateCodes) {
         evento: "Terça-feira de Carnaval",
         tipo: "estadual",
         observacao: "Feriado Estadual",
-        datetime: helpers.getISODate(helpers.addDays(helpers.getEasterSundayDate(year), -47))
+        datetime: helpers.getISODate(helpers.dateAddDays(helpers.getEasterSundayDate(year), -47))
         // 47 dias antes ao "Domingo de Páscoa"
       });
       
@@ -707,7 +701,6 @@ const holidays = async function(year, ...stateCodes) {
   
   year = helpers.yearParse(arguments.length ? year : helpers.date().getFullYear());
   
-  if (year instanceof Error) throw year;
   if (stateCodes[0] === true) return helpers.sortDateByAscending(nationalHolidays().concat(stateHolidays()));
   
   stateCodes.forEach((stateCode, i) => {
