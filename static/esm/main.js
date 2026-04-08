@@ -25,31 +25,35 @@ const done = holidays => {
   };
   
   const holidaysCreateLayout = (template, holidays) => {
+    if (!holidays.length) return;
+    
     const el = $(document.createElement("div"));
+    
+    el.append(`<div class="w-100"><h3 class="py-3 m-0">${template === "next"? "Próximos feriados…":"Feriados anteriores…"}</h3><hr class="border-5 rounded-5 m-0 mb-3"></div>`);
     
     holidays.forEach(holiday => {
       const M = moment(holiday.datetime);
       
-      el.append(`<div class="col mb-3">
+      el.append(`
+      <div class="col mb-3">
         <div${M.isBefore(datetime) && ' class="opacity-75"'}>
-          <div class="d-flex bg-light text-secondary align-items-center rounded shadow" data-title="${holiday.evento} (${holiday.observacao}: ${moment(holiday.datetime).format("LL")})" data-holiday-item>
-            <div class="text-${M.day() === 0 ? "bg-danger": `${M.day() === 6 ? "bg-warning": "bg-secondary"}`} text-center text-uppercase rounded-start py-1" style="width: 9em;">
+          <div class="d-flex text-bg-light align-items-center cursor-pointer rounded border border-5 shadow" data-title="${holiday.evento} (${holiday.observacao}: ${moment(holiday.datetime).format("LL")})" data-holiday-item>
+            <div class="text-${holiday.observacao.startsWith("Feriado") ? "bg-danger": `${["facultativo"].includes(holiday.tipo) ? "bg-warning": "bg-success"}`} text-center text-uppercase py-1" style="width: 9em;">
               <div class="fw-bold lh-1"><small>${M.format("dddd").split("-")[0]}</small></div>
-                <hr class="m-1">
-                <div><span class="lh-1" style="font-size: 1.75em;font-weight: 900;">${M.format("DD")}</span></div>
-                <div class="fw-bold lh-1">${M.format("MMMM")}</div>
-              </div>
+              <hr class="m-1">
+              <div><span class="lh-1" style="font-size: 1.75em;font-weight: 900;">${M.format("DD")}</span></div>
+              <div class="fw-bold lh-1">${M.format("MMMM")}</div>
+            </div>
         
-              <div class="text-center w-100 mx-2">
-                <div class="position-relative">
-                  <div class="text-truncate-2"><h5 class="m-0 ${holiday.observacao.includes("Feriado") ? "text-danger" : ["facultativo"].includes(holiday.tipo) ? "text-warning text-shadow":"text-success"}">${holiday.evento}</h5></div>
-                  <div class="fw-bold holiday-status" data-iso-date="${holiday.datetime}">${holidayStatus(holiday.datetime)}</div>
-                </div>
+            <div class="text-center w-100 mx-2">
+              <div class="position-relative">
+                <div class="text-truncate-2"><h5 class="m-0 ${holiday.observacao.startsWith("Feriado") ? "text-danger" : ["facultativo"].includes(holiday.tipo) ? "text-warning text-shadow":"text-success"}">${holiday.evento}</h5></div>
+                <div class="fw-bold holiday-status" data-iso-date="${holiday.datetime}">${holidayStatus(holiday.datetime)}</div>
               </div>
             </div>
-      
-            <small data-holiday-type="${holiday.tipo}"><em><i class="bi bi-info-circle-fill ${(["estadual","nacional"].includes(holiday.tipo) ? "text-danger" : [holiday.tipo].includes("facultativo") ? "text-warning" : "text-success")}"></i>&ensp;${holiday.observacao}${(holiday.uf ? ` (${holiday.uf.nome})` : "")}</em></small>
           </div>
+      
+          <small data-holiday-type="${holiday.tipo}"><em><i class="bi bi-info-circle-fill ${(["estadual","nacional"].includes(holiday.tipo) ? "text-danger" : [holiday.tipo].includes("facultativo") ? "text-warning" : "text-success")}"></i>&ensp;${holiday.observacao}${(holiday.uf ? ` (${holiday.uf.nome})` : "")}</em></small>
         </div>
       </div>`);
     });
@@ -59,15 +63,15 @@ const done = holidays => {
   
   document.title = `Feriadão CLT ${$('[data-select="YEAR"]').val()}`;
   //holidays = holidays.sort((a, b) => moment(b.datetime) - moment().startOf("day"));
-  //const nextHolidays = holidays.filter(holiday => moment(holiday.datetime) >= moment().startOf("day"));
-  //const lastHolidays = holidays.filter(holiday => moment(holiday.datetime) < moment().startOf("day")).sort((a, b) => moment(a) - moment());
+  const nextHolidays = holidays.filter(holiday => moment(holiday.datetime) >= moment().startOf("day"));
+  const lastHolidays = holidays.filter(holiday => moment(holiday.datetime) < moment().startOf("day")).sort((a, b) => moment(a) - moment());
   
   //holidaysCreateLayout("next", nextHolidays);
   //holidaysCreateLayout("last", lastHolidays);
   
-  $("[data-holidays]").html(
-    holidaysCreateLayout(null, holidays.sort((a, b) => moment(b.datetime) - moment().startOf("day"))).addClass("row row-cols-sm-2")
-  );
+  $("[data-holidays]").empty()
+    .append(holidaysCreateLayout("next", nextHolidays).addClass("row text-bg-light row-cols-sm-2 mb-3"))
+    .append(holidaysCreateLayout("last", lastHolidays).addClass("row text-bg-light row-cols-sm-2"));
   
   $(window).scrollTop() && $(window).scrollTop(0);
   $("#loader").is(":visible") && setTimeout(() => $("#loader").fadeOut(function() { $(document.body).removeClass("overflow-hidden") && $(this).remove(); }), 2000);
