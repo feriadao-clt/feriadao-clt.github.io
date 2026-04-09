@@ -29,7 +29,14 @@ const done = holidays => {
     
     const el = $(document.createElement("div"));
     
-    el.append(`<div class="w-100"><h3 class="py-3 m-0">${template === "next"? "Próximos feriados…":"Feriados anteriores…"}</h3><hr class="border-5 rounded-5 m-0 mb-3"></div>`);
+    el.append(`
+    <div class="w-100">
+      <h3 class="py-3 m-0">
+        ${template === "next" ? "Próximos eventos…" : "Eventos anteriores…"}
+      </h3>
+      
+      <hr class="border-5 rounded-5 m-0 mb-3">
+    </div>`);
     
     holidays.forEach(holiday => {
       const M = moment(holiday.datetime);
@@ -37,7 +44,7 @@ const done = holidays => {
       el.append(`
       <div class="col mb-3">
         <div${M.isBefore(datetime) && ' class="opacity-75"'}>
-          <div class="d-flex text-bg-light align-items-center cursor-pointer rounded border border-5 shadow" data-title="${holiday.evento} (${holiday.observacao}: ${moment(holiday.datetime).format("LL")})" data-holiday-item>
+          <div title="Clique para compartilhar este Evento!" class="d-flex ${["facultativo"].includes(holiday.tipo) ? "text-bg-dark" : "text-bg-light"} align-items-center cursor-pointer rounded border border-secondary border-5 shadow" data-title="${holiday.evento} (${holiday.observacao}: ${moment(holiday.datetime).format("LL")})" data-holiday-item>
             <div class="text-${holiday.observacao.startsWith("Feriado") ? "bg-danger": `${["facultativo"].includes(holiday.tipo) ? "bg-warning": "bg-success"}`} text-center text-uppercase py-1" style="width: 9em;">
               <div class="fw-bold lh-1"><small>${M.format("dddd").split("-")[0]}</small></div>
               <hr class="m-1">
@@ -47,13 +54,16 @@ const done = holidays => {
         
             <div class="text-center w-100 mx-2">
               <div class="position-relative">
-                <div class="text-truncate-2"><h5 class="m-0 ${holiday.observacao.startsWith("Feriado") ? "text-danger" : ["facultativo"].includes(holiday.tipo) ? "text-warning text-shadow":"text-success"}">${holiday.evento}</h5></div>
+                <div class="text-truncate-2"><h5 class="fw-bold m-0 ${holiday.observacao.startsWith("Feriado") ? "text-danger" : ["facultativo"].includes(holiday.tipo) ? "text-warning":"text-success"}">${holiday.evento}</h5></div>
                 <div class="fw-bold holiday-status" data-iso-date="${holiday.datetime}">${holidayStatus(holiday.datetime)}</div>
               </div>
             </div>
           </div>
-      
-          <small data-holiday-type="${holiday.tipo}"><em><i class="bi bi-info-circle-fill ${(["estadual","nacional"].includes(holiday.tipo) ? "text-danger" : [holiday.tipo].includes("facultativo") ? "text-warning" : "text-success")}"></i>&ensp;${holiday.observacao}${(holiday.uf ? ` (${holiday.uf.nome})` : "")}</em></small>
+          
+          <div title="Clique para saber mais!" class="d-inline-flex gap-2">
+            <small><i aria-label="ícone de informação" class="bi bi-info-circle-fill ${(["estadual","nacional"].includes(holiday.tipo) ? "text-danger" : [holiday.tipo].includes("facultativo") ? "text-warning" : "text-success")}"></i></small>
+            <small class="cursor-pointer" data-holiday-type="${holiday.tipo}">${holiday.observacao}${(holiday.uf ? ` (${holiday.uf.nome})` : "")}</small>
+          </div>
         </div>
       </div>`);
     });
@@ -70,8 +80,8 @@ const done = holidays => {
   //holidaysCreateLayout("last", lastHolidays);
   
   $("[data-holidays]").empty()
-    .append(holidaysCreateLayout("next", nextHolidays).addClass("row text-bg-light row-cols-sm-2 mb-3"))
-    .append(holidaysCreateLayout("last", lastHolidays).addClass("row text-bg-light row-cols-sm-2"));
+    .append(holidaysCreateLayout("next", nextHolidays).addClass("row text-bg-light row-cols-sm-2 rounded-lg mb-3"))
+    .append(holidaysCreateLayout("last", lastHolidays).addClass("row text-bg-light row-cols-sm-2 rounded-lg mb-3"));
   
   $(window).scrollTop() && $(window).scrollTop(0);
   $("#loader").is(":visible") && setTimeout(() => $("#loader").fadeOut(function() { $(document.body).removeClass("overflow-hidden") && $(this).remove(); }), 2000);
@@ -99,13 +109,13 @@ $(window).on("load", function(evt) {
   $(".powered-by").on("animationend", () => {
     for (let i = 1900; i < 2200; i++) {
       $('[data-select="YEAR"]').append(
-        `<option value="${i}"${i === moment().year() ? " selected":""}>Ano ${i}</option>`
+        `<option value="${i}"${i === moment().year() ? " selected":""}>ANO: ${i}</option>`
       );
     }
     
     UF.forEach(el => {
       $('[data-select="UF"] optgroup[data-name="UF"]').append(
-        `<option value="${el.sigla}">${el.nome}</option>`
+        `<option value="${el.sigla}">Estado: ${el.nome}</option>`
       );
     });
     

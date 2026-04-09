@@ -25,3 +25,9 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+@media (min-width: 992px) {
+  .rounded-lg {
+    border-radius: .5em;
+  }
+}

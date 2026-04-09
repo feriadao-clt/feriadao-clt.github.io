@@ -80,7 +80,7 @@ const holidays = async function(year, ...stateCodes) {
     const fixedHolidays = (() => {
       data.push({
         // 1º de Janeiro …
-        evento: "Confraternização Universal",
+        evento: "Confraternização Universal (Ano Novo)",
         tipo: "nacional",
         observacao: "Feriado Nacional",
         datetime: `${year}-01-01T00:00:00`
@@ -200,7 +200,7 @@ const holidays = async function(year, ...stateCodes) {
       
       data.push({
         // 31 de Dezembro …
-        evento: "Véspera de Ano Novo",
+        evento: "Véspera de Ano Novo (Réveillon)",
         tipo: "facultativo",
         observacao: "Ponto Facultativo (a partir das 14 horas)",
         datetime: `${year}-12-31T00:00:00`
