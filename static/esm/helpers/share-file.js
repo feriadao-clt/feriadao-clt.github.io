@@ -13,7 +13,7 @@ if (navigator.supports.canShare) {
   $(document.body).on("click", "[data-holiday-item]", function(evt) {
     const H = $.data(this, "holiday");
     const url = location.href;
-    const text = `${H.evento}\n${moment(H.datetime).format("dddd, D [de] MMMM [de] YYYY")}.\n${H.observacao}`;
+    const text = `${H.evento}\n${moment(H.datetime).format("dddd, D [de] MMMM [de] YYYY")}.\n${H.observacao}\n`;
     const title = H.evento;
     
     htmlToImage.toBlob(this).then(blob => shareFile({ url, text, title, files: [new File([blob], blob.type.split("/").join("."), { type: blob.type })] }).catch(failure)).catch(failure);

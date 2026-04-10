@@ -44,8 +44,8 @@ const success = holidays => {
       const col = $(`
       <div class="col mb-3">
         <div ${M.isBefore(now.format()) ? 'class="opacity-75"' : ""}>
-          <div ${navigator.supports.canShare ? 'title="Clique para compartilhar este Evento!"' : ""} class="d-flex ${["facultativo"].includes(holiday.tipo) ? "text-bg-dark" : "text-bg-light"} align-items-center ${navigator.supports.canShare ? "cursor-pointer" : ""} rounded border border-secondary border-5 shadow" data-title="${holiday.evento} (${holiday.observacao}: ${moment(holiday.datetime).format("LL")})" data-holiday-item>
-            <div class="text-${holiday.observacao.startsWith("Feriado") ? "bg-danger": `${["facultativo"].includes(holiday.tipo) ? "bg-warning": "bg-success"}`} text-center text-uppercase py-1" style="width: 9em;">
+          <div ${navigator.supports.canShare ? 'title="Clique para compartilhar este Evento!"' : ""} class="d-flex ${["facultativo"].includes(holiday.tipo) ? "text-bg-dark" : "text-bg-light"} align-items-center ${navigator.supports.canShare ? "cursor-pointer" : ""} rounded border border-secondary border-5 shadow" style="height: 5.5em;" data-title="${holiday.evento} (${holiday.observacao}: ${moment(holiday.datetime).format("LL")})" data-holiday-item>
+            <div class="text-${holiday.observacao.startsWith("Feriado") ? "bg-danger": `${["facultativo"].includes(holiday.tipo) ? "bg-warning": "bg-success"}`} text-center text-uppercase py-1" style="width: 9em; height: 100%;">
               <div class="fw-bold lh-1"><small>${M.format("dddd").split("-")[0]}</small></div>
               <hr class="m-1">
               <div><span class="lh-1" style="font-size: 1.75em;font-weight: 900;">${M.format("DD")}</span></div>
