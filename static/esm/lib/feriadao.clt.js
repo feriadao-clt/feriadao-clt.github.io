@@ -75,6 +75,7 @@ const helpers = {
  * @returns {Promise<Array>}
  */
 const holidays = async function(year, ...stateCodes) {
+  let _;
   const nationalHolidays = () => {
     const data = [];
     const fixedHolidays = (() => {
@@ -708,9 +709,13 @@ const holidays = async function(year, ...stateCodes) {
     stateCode ? stateCodes[i] = stateCode : stateCodes.splice(i, 1);
   });
   
-  return helpers.sortDateByAscending(nationalHolidays().concat(
-    stateCodes.length ? stateHolidays().filter(holiday => stateCodes.includes(holiday.uf.sigla)) : []
-  ));
+  _ = helpers.sortDateByAscending(
+    nationalHolidays().concat(
+      stateCodes.length ? stateHolidays().filter(holiday => stateCodes.includes(holiday.uf.sigla)) : []
+    )
+  );
+  
+  return _.forEach((holiday, i) => holiday.id = i + 1), _;
 }
 
 export default holidays.bind(null);

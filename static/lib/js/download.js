@@ -7,9 +7,8 @@
     if (supports) {
       a.download = (((typeof filename === "string") && filename.trim()) || "");
       
-      if (typeof url === "string") {
-        if (url.trim()) a.href = url, a.click();
-      } else if ((typeof Blob === "function") && (url instanceof Blob)) url = URL.createObjectURL(url), a.href = url, a.click(), URL.revokeObjectURL(url);
+      if (typeof url === "string") url = url.trim(), url && (a.href = url, a.click());
+      else if (("Blob" in global) && (typeof Blob === "function") && (url instanceof Blob)) url = URL.createObjectURL(url), a.href = url, a.click(), URL.revokeObjectURL(url);
     }
   }
   

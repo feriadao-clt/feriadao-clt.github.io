@@ -2,11 +2,12 @@ import UF from "./lib/uf.js";
 import logger from "./lib/logger.js";
 import feriadosNacionais from "./lib/feriadao.clt.js";
 
-const fail = err => (logger.error(err), Snackbar.show({ text: err.message }));
-const done = holidays => {
-  clearTimeout(done.timeout);
+const failure = err => { logger.error(err), Snackbar.show({ text: err.message }) };
+const success = holidays => {
+  console.log(holidays)
+  clearTimeout(success.timeout);
   
-  const datetime = moment().startOf("day").format();
+  const now = moment().startOf("day");
   const holidayStatus = datetime => moment(datetime).calendar({
     lastDay: `[<div class="overflow-hidden"><div class="animate__animated animate__heartBeat animate__infinite infinite"><time class="small" datetime="${datetime}">ontem</time></div></div>]`,
     sameDay: `[<div class="overflow-hidden"><div class="animate__animated animate__heartBeat animate__infinite infinite"><time class="small" datetime="${datetime}">hoje</time></div></div>]`,
@@ -21,15 +22,15 @@ const done = holidays => {
       $(this).replaceWith(holidayStatus($(this).find("time[datetime]").attr("datetime")));
     });
     
-    done.timeout = setTimeout(holidayStatusWatch, 1000);
+    success.timeout = setTimeout(holidayStatusWatch, 1000);
   };
   
   const holidaysCreateLayout = (template, holidays) => {
     if (!holidays.length) return;
     
-    const el = $(document.createElement("div"));
+    const row = $(document.createElement("div"));
     
-    el.append(`
+    row.append(`
     <div class="w-100">
       <h3 class="py-3 m-0">
         ${template === "next" ? "Próximos eventos…" : "Eventos anteriores…"}
@@ -40,11 +41,10 @@ const done = holidays => {
     
     holidays.forEach(holiday => {
       const M = moment(holiday.datetime);
-      
-      el.append(`
+      const col = $(`
       <div class="col mb-3">
-        <div${M.isBefore(datetime) && ' class="opacity-75"'}>
-          <div title="Clique para compartilhar este Evento!" class="d-flex ${["facultativo"].includes(holiday.tipo) ? "text-bg-dark" : "text-bg-light"} align-items-center cursor-pointer rounded border border-secondary border-5 shadow" data-title="${holiday.evento} (${holiday.observacao}: ${moment(holiday.datetime).format("LL")})" data-holiday-item>
+        <div ${M.isBefore(now.format()) ? 'class="opacity-75"' : ""}>
+          <div ${navigator.supports.canShare ? 'title="Clique para compartilhar este Evento!"' : ""} class="d-flex ${["facultativo"].includes(holiday.tipo) ? "text-bg-dark" : "text-bg-light"} align-items-center ${navigator.supports.canShare ? "cursor-pointer" : ""} rounded border border-secondary border-5 shadow" data-title="${holiday.evento} (${holiday.observacao}: ${moment(holiday.datetime).format("LL")})" data-holiday-item>
             <div class="text-${holiday.observacao.startsWith("Feriado") ? "bg-danger": `${["facultativo"].includes(holiday.tipo) ? "bg-warning": "bg-success"}`} text-center text-uppercase py-1" style="width: 9em;">
               <div class="fw-bold lh-1"><small>${M.format("dddd").split("-")[0]}</small></div>
               <hr class="m-1">
@@ -66,22 +66,26 @@ const done = holidays => {
           </div>
         </div>
       </div>`);
+      
+      $.data(col.find("[data-holiday-item]").get(0), "holiday", holiday);
+      row.append(col);
     });
     
-    return el;
+    return row.addClass("row text-bg-light row-cols-sm-2 rounded-lg mb-3");
   };
   
   document.title = `Feriadão CLT ${$('[data-select="YEAR"]').val()}`;
   //holidays = holidays.sort((a, b) => moment(b.datetime) - moment().startOf("day"));
-  const nextHolidays = holidays.filter(holiday => moment(holiday.datetime) >= moment().startOf("day"));
-  const lastHolidays = holidays.filter(holiday => moment(holiday.datetime) < moment().startOf("day")).sort((a, b) => moment(a) - moment());
+  const nextHolidays = holidays.filter(holiday => moment(holiday.datetime) >= now);
+  const lastHolidays = holidays.filter(holiday => moment(holiday.datetime) < now).sort((a, b) => moment(a.datetime) - now);
   
   //holidaysCreateLayout("next", nextHolidays);
   //holidaysCreateLayout("last", lastHolidays);
   
-  $("[data-holidays]").empty()
-    .append(holidaysCreateLayout("next", nextHolidays).addClass("row text-bg-light row-cols-sm-2 rounded-lg mb-3"))
-    .append(holidaysCreateLayout("last", lastHolidays).addClass("row text-bg-light row-cols-sm-2 rounded-lg mb-3"));
+  $("[data-holidays]").empty().html([
+    holidaysCreateLayout("next", nextHolidays),
+    holidaysCreateLayout("last", lastHolidays)
+  ]);
   
   $(window).scrollTop() && $(window).scrollTop(0);
   $("#loader").is(":visible") && setTimeout(() => $("#loader").fadeOut(function() { $(document.body).removeClass("overflow-hidden") && $(this).remove(); }), 2000);
@@ -93,18 +97,16 @@ const fnHolidays = function(evt) {
   const uf = $('[data-select="UF"]');
   const year = $('[data-select="YEAR"]');
   
-  if (!uf.val()) localStorage.removeItem("UF");
-  else localStorage.setItem("UF", uf.val());
+  if (uf.val()) localStorage.UF = uf.val();
+  else localStorage.removeItem("UF");
   
-  feriadosNacionais(year.val(), uf.val()).then(done).catch(fail);
+  
+  feriadosNacionais(year.val(), uf.val()).then(success).catch(failure);
 };
 
 $(window).on("load", function(evt) {
   moment.locale(navigator.language);
-  import("./helpers/swr.js");
-  import("./helpers/author.js");
-  import("./helpers/share-file.js");
-  import("./helpers/holidays.faq.js");
+  import("./imports.js");
   
   $(".powered-by").on("animationend", () => {
     for (let i = 1900; i < 2200; i++) {
@@ -113,9 +115,9 @@ $(window).on("load", function(evt) {
       );
     }
     
-    UF.forEach(el => {
+    UF.forEach(uf => {
       $('[data-select="UF"] optgroup[data-name="UF"]').append(
-        `<option value="${el.sigla}">Estado: ${el.nome}</option>`
+        `<option value="${uf.sigla}">Estado: ${uf.nome}</option>`
       );
     });
     
