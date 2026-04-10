@@ -4,7 +4,6 @@ import feriadosNacionais from "./lib/feriadao.clt.js";
 
 const failure = err => { logger.error(err), Snackbar.show({ text: err.message }) };
 const success = holidays => {
-  console.log(holidays)
   clearTimeout(success.timeout);
   
   const now = moment().startOf("day");
