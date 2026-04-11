@@ -5,7 +5,12 @@ export default `<!-- Modal -->
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down">
     <div class="modal-content">
       <div class="modal-header border-0 shadow">
-        <h1 class="modal-title fs-5" id="${modalNames}Label"><i class="bi bi-info-circle-fill"></i>&ensp;ABOUT</h1>
+        <h1 class="modal-title fs-5" id="${modalNames}Label">
+          <div class="d-flex gap-2">
+            <span><i class="bi bi-info-circle-fill"></i></span>
+            <span>ABOUT</span>
+          </div>
+        </h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       
@@ -19,9 +24,13 @@ export default `<!-- Modal -->
               
               <h3 class="fw-bold">Delvani Software</h3>
               
-              <p class="m-0">(c) ${moment().year()} Delvani, All rights reserved.</p>
-              <p class="m-0">
-                <a class="text-decoration-none" href="https://maps.app.goo.gl/8MQJaGgUd7h8WACt9?g_st=ac"><small>ITAREMA, CE - BR</small></a>
+              <p>(c) ${moment().year()} Delvani, All rights reserved.</p>
+              <p class="small m-0">
+                <a class="text-decoration-none" href="//maps.google.com/?cid=6541733770786175250">
+                  <span><i class="bi bi-geo-alt-fill text-danger"></i></span>
+                  <span class="mx-1"></span>
+                  <span>ITAREMA, CE - BR</span>
+                </a>
               </p>
             </div>
           </div>
