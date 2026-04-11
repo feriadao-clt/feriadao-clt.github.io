@@ -79,11 +79,11 @@
         
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a href="#" class="nav-link text-center text-lg" data-author="ABOUT">ABOUT</a>
+            <a href="#" class="nav-link text-center text-lg" data-bs-toggle="modal" data-bs-target="#dialogAuthorModal">ABOUT</a>
           </li>
           
           <li class="nav-item">
-            <a href="#" class="nav-link text-center text-lg" data-bs-toggle="modal" data-bs-target="#licenseModal">LICENSE</a>
+            <a href="#" class="nav-link text-center text-lg" data-bs-toggle="modal" data-bs-target="#dialogLicenseModal">LICENSE</a>
           </li>
         </ul>
       </div>
@@ -94,9 +94,9 @@
     <div data-holidays></div>
   </div>
   
-  <div id="loader">
-    <div class="position-fixed text-bg-dark top-0 start-0 w-100 h-100" style="z-index: 99999;">
-      <div class="position-absolute top-50 start-50 translate-middle">
+  <div id="loader" class="position-absolute text-bg-dark top-0 start-0 w-100 h-100 mh-100 overflow-y-scroll" style="z-index: 9999;">
+    <div class="d-table w-100 h-100 py-3" style="min-height: 100%;">
+      <div class="d-table-cell align-middle">
         <div class="text-center lh-1">
           <svg aria-label="ícone da aplicação" class="rounded-circle mb-3" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="90px" height="90px"><svg width="90px" height="90px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet">
             

@@ -59,9 +59,9 @@ const success = holidays => {
             </div>
           </div>
           
-          <div title="Clique para saber mais!" class="d-inline-flex gap-2">
+          <div title="Clique para saber mais!" class="d-inline-flex cursor-pointer gap-2" data-bs-toggle="modal" data-bs-target="#${holiday.tipo}HolidayModal">
             <small><i aria-label="ícone de informação" class="bi bi-info-circle-fill ${(["estadual","nacional"].includes(holiday.tipo) ? "text-danger" : [holiday.tipo].includes("facultativo") ? "text-warning" : "text-success")}"></i></small>
-            <small class="cursor-pointer" data-holiday-type="${holiday.tipo}">${holiday.observacao}${(holiday.uf ? ` (${holiday.uf.nome})` : "")}</small>
+            <small data-holiday-type="${holiday.tipo}">${holiday.observacao}${(holiday.uf ? ` (${holiday.uf.nome})` : "")}</small>
           </div>
         </div>
       </div>`);
