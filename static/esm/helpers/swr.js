@@ -6,4 +6,4 @@ const failure = err => logger.error({ err });
 if (navigator.supports.serviceWorker) window.navigator.serviceWorker.register("/sw.js", { scope: "/" }).then(success).catch(failure);
 else logger.warn("ServiceWorker not supported!");
 
-export default null;
+export default void 0;

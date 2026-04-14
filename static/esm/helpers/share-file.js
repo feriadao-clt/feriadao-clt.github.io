@@ -20,4 +20,4 @@ if (navigator.supports.canShare) {
   });
 } else logger.warn("Web Share API not supported.");
 
-export default null;
+export default void 0;
