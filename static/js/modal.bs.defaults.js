@@ -1,9 +1,7 @@
 (function() {
   "use strict";
-  modal.btnOkLabel = "OK";
-  modal.btnNoLabel = "Não";
-  modal.btnYesLabel = "Sim";
-  modal.btnCancelLabel = "Cancelar";
-  modal.btnConfirmLabel = "Confirmar";
-  modal.btnDismissLabel = "Dispensar";
+  modal.alert.btnConfirmLabel = "OK";
+  modal.dialog.btnDismissLabel = "Dispensar";
+  modal.confirm.btnCancelLabel = "Cancelar";
+  modal.confirm.btnConfirmLabel = "Confirmar";
 })()

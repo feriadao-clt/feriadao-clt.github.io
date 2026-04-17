@@ -6,7 +6,7 @@ import datasComemorativas from "./templates/datas-comemorativas.faq.js";
 
 const res = await fetch("/LICENSE");
 const license = await res.text();
-const dialog = modal.confirm();
+const dialog = modal.dialog();
 const title = {
   author: '<i class="bi bi-info-circle-fill"></i>&ensp;Author',
   license: '<i class="bi bi-key-fill"></i>&ensp;LICENSE',
@@ -22,6 +22,7 @@ dialog.on("shown.bs.modal", function(evt) {
 
 dialog.on("hidden.bs.modal", function(evt) {
   console.log(evt.type);
+  //dialog.destroy();
 });
 
 dialog.on("destroy.bs.modal", function(evt) {
@@ -38,9 +39,13 @@ dialog.on("cancel.btn.modal", function(evt) {
 
 dialog.on("confirm.btn.modal", function(evt) {
   console.log(evt.type);
+  //dialog.destroy()
 });
 
-dialog.addClass("modal-fullscreen-md-down modal-dialog-scrollable modal-dialog-centered");
+dialog.size("lg")
+  .centered(true)
+  .scrollable(true)
+  .fullscreen("lg-down");
 
 $(document.body).on("click", "[data-nav-link]", function(evt) {
   if (this.dataset.navLink === "about") dialog.title(title.author).body(author).show();
