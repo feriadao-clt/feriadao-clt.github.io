@@ -9,259 +9,297 @@
   
   let i = 0;
   const store = Object.create(null);
-  const Modal = function Modal(modalType, title, body) {
-    const el = getModal(modalType);
-    const fn = Object.create(null);
-    const self = this;
-    const dummy = document.createElement("div");
-    const modal = bootstrap.Modal.getOrCreateInstance(el);
-    const ModalBody = el.querySelector(".modal-body");
-    const BtnCancel = el.querySelector('button[name="cancel"]');
-    const BtnConfirm = el.querySelector('button[name="confirm"]');
-    const BtnDismiss = el.querySelector('button[name="dismiss"]');
-    const btnActions = el.querySelectorAll('button[data-btn="action"]');
-    const ModalTitle = el.querySelector(".modal-title");
-    const ModalDialog = el.querySelector(".modal-dialog");
-    const ModalHeader = el.querySelector(".modal-header");
-    const ModalFooter = el.querySelector(".modal-footer");
-    const ModalContent = el.querySelector(".modal-content");
-    const dispatchEvent = type => {
-      if (dispatchEvent.btnAction) delete dispatchEvent.btnAction;
-      dummy.dispatchEvent(new Event(type));
-    };
-    
-    modalType = strParse(modalType).toLowerCase() || "alert";
-    fn.createAlertModal = () => {
-      BtnConfirm.dataset.action = "confirm.btn.modal";
-      BtnDismiss.remove(), BtnCancel.remove();
-      self.btnLabels({ confirm: "OK" });
-    };
-    
-    fn.createDialogModal = () => {
-      BtnDismiss.dataset.action = "dismiss.btn.modal";
-      ModalFooter.remove();
-      self.btnLabels({ dismiss: "Dismiss" });
-    };
-    
-    fn.createConfirmModal = () => {
-      BtnCancel.dataset.action = "cancel.btn.modal";
-      BtnConfirm.dataset.action = "confirm.btn.modal";
-      BtnDismiss.remove();
-      self.btnLabels({ cancel: "Cancel", confirm: "Confirm" });
-    };
-    
-    this.on = function on(ev, cb) { return dummy.addEventListener(ev, cb), self; };
-    this.one = function one(ev, cb) { return dummy.addEventListener(ev, cb, { once: true }), self; };
-    this.off = function off(ev, cb) { return dummy.removeEventListener(ev, cb), self; };
-    this.show = function show() { return modal.show(), self; };
-    this.hide = function hide() { return modal.hide(), self; };
-    this.destroy = function destroy() { modal.dispose(), el.remove(), dispatchEvent("destroy.bs.modal"); };
-    
-    this.body = function body(str) {
-      if (arguments.length && strParse(str)) ModalBody.innerHTML = str.trim();
-      return self;
-    };
-    
-    this.title = function title(str) {
-      if (arguments.length && strParse(str)) ModalTitle.innerHTML = str.trim();
-      return self;
-    };
-    
-    this.header = function header(str) {
-      if (arguments.length) {
-        if (str === false) el.removeAttribute("aria-labelledby"), ModalHeader.remove();
-        else if (strParse(str)) ModalHeader.innerHTML = str.trim();
+  
+  class Modal extends Comment {
+    constructor(modalType, title, content) {
+      super("modal.bs.js");
+      
+      let bsmodal;
+      let options = Object.create(null);
+      let defaults = Object.assign(Object.create(null), modal.defaults);
+      
+      modalType = strParse(modalType).toLowerCase();
+      
+      if (!["alert", "dialog", "confirm"].includes(modalType)) modalType = "alert";
+      
+      const el = getModal(modalType);
+      const ctx = this;
+      
+      const BtnClose = el.querySelector('button[name="close"]');
+      const BtnCancel = el.querySelector('button[name="cancel"]');
+      const ModalBody = el.querySelector(".modal-body");
+      const BtnConfirm = el.querySelector('button[name="confirm"]');
+      const ModalTitle = el.querySelector(".modal-title");
+      const ModalDialog = el.querySelector(".modal-dialog");
+      const ModalHeader = el.querySelector(".modal-header");
+      const ModalFooter = el.querySelector(".modal-footer");
+      const ModalContent = el.querySelector(".modal-content");
+      
+      const btnActions = el.querySelectorAll('button[data-btn="action"]');
+      const modalConfig = Object.create(null);
+      const createModal = () => bsmodal = bootstrap.Modal.getOrCreateInstance(el, modalConfig);
+      const qispatchEvent = (event, config) => ctx.dispatchEvent(new Event(event, config));
+      
+      const createModalAlert = () => {
+        el.dataset.modalType = modalType;
+        BtnConfirm.name = "okay";
+        BtnConfirm.textContent = "OK";
+        BtnConfirm.dataset.action = "okay.btn.click";
+        BtnClose.remove(), BtnCancel.remove();
+      };
+      
+      const createModalDialog = () => {
+        el.dataset.modalType = modalType;
+        BtnClose.dataset.action = "close.btn.click";
+        ModalFooter.remove();
+      };
+      
+      const createModalConfirm = () => {
+        el.dataset.modalType = modalType;
+        BtnCancel.dataset.action = "cancel.btn.click";
+        BtnConfirm.dataset.action = "confirm.btn.click";
+        BtnClose.remove();
+      };
+      
+      modalConfig.focus = true;
+      modalConfig.backdrop = "static";
+      modalConfig.keyboard = false;
+      
+      ctx.on = function on(event, callback) { return ctx.addEventListener(event, callback), ctx; };
+      ctx.one = function one(event, callback) { return ctx.addEventListener(event, callback, { once: true }), ctx; };
+      ctx.off = function off(event, callback) { return ctx.removeEventListener(event, callback), ctx; };
+      ctx.show = function show() { return bsmodal.show(), ctx; };
+      ctx.hide = function hide() { return bsmodal.hide(), ctx; };
+      ctx.dispose = function dispose() { bsmodal.dispose(), el.remove(), qispatchEvent("dispose.bs.modal"), ctx.remove(); };
+      
+      ctx.btn = function getButton() {
+        let btns = Array.from(btnActions);
+        const proto = Object.create(null);
+        const btnNames = Array.from(arguments);
+        const setBtnDisabled = state => btns.forEach(btn => state !== btn.matches(":disabled") ? btn.disabled = state : null);
+        
+        btnNames.forEach((btnName, idx) => btnNames[idx] = strParse(btnName).toLowerCase());
+        
+        arguments.length ? btns = btns.filter(btn => btnNames.includes(btn.name)) : null;
+        proto.enable = function enable() { setBtnDisabled(false); };
+        proto.disable = function disable() { setBtnDisabled(true); };
+        
+        return proto;
+      };
+      
+      ctx.icon = function setIcon(value) {
+        let $;
+        const icon = Object.assign(Object.create(null), value);
+        const iconame = stripHtml(strParse(icon.name)).toLowerCase().replace(/\s+/g, "");
+        const breakpoint = stripHtml(strParse(icon.color)).toLowerCase().replace(/\s+/g, "");
+        const breakpoints = ["dark", "info", "light", "danger", "success", "primary", "warning", "secondary"];
+        
+        if (iconame) {
+          $ = ModalTitle.querySelector("i") || (ModalTitle.prepend(document.createElement("i")), ModalTitle.querySelector("i"));
+          $.className = `bi bi-${iconame}${breakpoints.includes(breakpoint) ? ` text-${breakpoint}` : ""}`;
+          $.setAttribute("aria-label", "icon: " + iconame.split("-").join(" "));
+        }
+        
+        return ctx;
+      };
+      
+      ctx.theme = function setTheme(value) {
+        switch (strParse(value).toLowerCase()) {
+          case "dark":
+            el.dataset.bsTheme = value;
+            Array.from(btnActions).forEach(btn => btn.name !== "close" && btn.classList.add("btn-light"));
+            break;
+            
+          case "info":
+            el.dataset.bsTheme = value;
+            
+            ModalHeader.classList.add("text-bg-info");
+            ModalContent.classList.add("text-bg-light");
+            Array.from(btnActions).forEach(btn => btn.name === "close" ? btn.dataset.bsTheme = "light" : btn.classList.add("btn-info"));
+            break;
+            
+          case "danger":
+            el.dataset.bsTheme = value;
+            
+            ModalHeader.classList.add("text-bg-danger");
+            ModalContent.classList.add("text-bg-light");
+            Array.from(btnActions).forEach(btn => btn.name !== "close" && btn.classList.add("btn-danger"));
+            break;
+            
+          case "success":
+            el.dataset.bsTheme = value;
+            
+            ModalHeader.classList.add("text-bg-success");
+            ModalContent.classList.add("text-bg-light");
+            Array.from(btnActions).forEach(btn => btn.name !== "close" && btn.classList.add("btn-success"));
+            break;
+            
+          case "primary":
+            el.dataset.bsTheme = value;
+            
+            ModalHeader.classList.add("text-bg-primary");
+            ModalContent.classList.add("text-bg-light");
+            Array.from(btnActions).forEach(btn => btn.name !== "close" && btn.classList.add("btn-primary"));
+            break;
+            
+          case "warning":
+            el.dataset.bsTheme = value;
+            
+            ModalHeader.classList.add("text-bg-warning");
+            ModalContent.classList.add("text-bg-dark");
+            Array.from(btnActions).forEach(btn => btn.name === "close" ? btn.dataset.bsTheme = "light" : btn.classList.add("btn-warning"));
+            break;
+            
+          case "secondary":
+            el.dataset.bsTheme = value;
+            
+            ModalHeader.classList.add("text-bg-secondary");
+            ModalContent.classList.add("text-bg-light");
+            Array.from(btnActions).forEach(btn => btn.name !== "close" && btn.classList.add("btn-secondary"));
+            break;
+            
+          default: // => "light"
+            el.dataset.bsTheme = "light";
+            Array.from(btnActions).forEach(btn => btn.name !== "close" && btn.classList.add("btn-dark"));
+        }
+        
+        return ctx;
+      };
+      
+      ctx.title = function setTitle(value) {
+        value = stripHtml(strParse(value));
+        
+        if (value) ModalTitle.querySelector("span").textContent = value;
+        return ctx;
+      };
+      
+      ctx.content = function content(value) {
+        if (!arguments.length) return ModalBody;
+        
+        const html = strParse(value);
+        
+        if (html) ModalBody.innerHTML = html;
+        else if (value instanceof HTMLElement) ModalBody.innerHTML = "", ModalBody.append(value);
+        return ctx;
+      };
+      
+      ctx.btnLabels = function setBtnLabels(value) {
+        const btnLabels = Object.assign(Object.create(null), value);
+        
+        Object.keys(btnLabels).forEach(btnName => {
+          const btn = Array.from(btnActions).find(btn => btn.name === strParse(btnName).toLowerCase());
+          const btnLabel = stripHtml(strParse(btnLabels[btnName]));
+          
+          if (!btn || !btnLabel) return;
+          if (btn.name !== "close") btn.textContent = btnLabel;
+          else btn.setAttribute("aria-label", btnLabel);
+        });
       }
       
-      return self;
-    };
-    
-    this.footer = function footer(str) {
-      if (arguments.length) {
-        if (str === false) ModalFooter.remove();
-        if (strParse(str)) ModalFooter.innerHTML = str.trim();
+      if (arguments.length > 2) options.title = title, options.content = content;
+      else if (Object.prototype.toString.call(title) === "[object Object]") options = Object.assign(options, title);
+      else options.content = title;
+      
+      options = Object.assign(defaults, options);
+      options.icon = Object.assign(Object.create(null), options.icon);
+      options.btnLabel = Object.assign(Object.create(null), options.btnLabel);
+      
+      if ("size" in options) {
+        const size = ["modal"];
+        const breakpoint = strParse(options.size).toLowerCase();
+        const breakpoints = ["sm", "lg", "xl"];
+        breakpoints.includes(breakpoint) && size.push(breakpoint) && ModalDialog.classList.add(size.join("-"));
       }
       
-      return self;
-    };
-    
-    this.size = function fullscreen(opt) {
-      opt = strParse(opt).toLowerCase();
-      opt = ["sm", "lg", "xl"].find(val => opt === val);
-      opt && ModalDialog.classList.add("modal-" + opt);
+      if (options.btnClose === false) BtnClose.remove();
+      if (options.centered !== false) ModalDialog.classList.add("modal-dialog-centered");
+      if (options.scrollable !== false) ModalDialog.classList.add("modal-dialog-scrollable");
       
-      return self;
-    };
-    
-    this.centered = function centered(bool) {
-      if (typeof bool === "boolean") bool ? ModalDialog.classList.add("modal-dialog-centered") : ModalDialog.classList.remove("modal-dialog-centered");
-      return self;
-    };
-    
-    this.dismissible = function dismissible(bool) {
-      if (typeof bool === "boolean") {
-        modal._config.focus = !bool;
-        modal._config.keyboard = bool;
-        modal._config.backdrop = bool;
+      if ("fullscreen" in options) {
+        const fullscreen = ["modal-fullscreen"];
+        const breakpoint = strParse(options.fullscreen).toLowerCase();
+        const breakpoints = ["sm-down", "md-down", "lg-down", "xl-down", "xxl-down"];
+        
+        if (options.fullscreen === true) ModalDialog.classList.add(fullscreen[0]);
+        else if (breakpoints.includes(breakpoint)) fullscreen.push(breakpoint), ModalDialog.classList.add(fullscreen.join("-"));
       }
       
-      return self;
-    };
-    
-    this.btnLabels = function btnLabels(labels) {
-      if (labels != null) Object.keys(labels).forEach(label => {
-        if (label === "cancel") BtnCancel.textContent = strParse(labels[label]) || BtnCancel.textContent;
-        else if (label === "dismiss") BtnDismiss.setAttribute("aria-label", strParse(labels[label]) || BtnDismiss.getAttribute("aria-label"));
-        else if (label === "confirm") BtnConfirm.textContent = strParse(labels[label]) || BtnConfirm.textContent;
+      if (options.dismissible === true) {
+        modalConfig.focus = false;
+        modalConfig.backdrop = true;
+        modalConfig.keyboard = true;
+      }
+      
+      if (modalType === "alert") createModalAlert();
+      else if (modalType === "dialog") createModalDialog();
+      else if (modalType === "confirm") createModalConfirm();
+      
+      el.addEventListener("show.bs.modal", function(evt) { if (!qispatchEvent(evt.type, { cancelable: true })) evt.preventDefault(); });
+      el.addEventListener("hide.bs.modal", function(evt) { if (!qispatchEvent(evt.type, { cancelable: true })) evt.preventDefault(); });
+      el.addEventListener("shown.bs.modal", function(evt) { qispatchEvent(evt.type); });
+      el.addEventListener("hidden.bs.modal", function(evt) { qispatchEvent(evt.type); });
+      
+      btnActions.forEach(btn => {
+        btn.addEventListener("click", function(evt) {
+          (evt.isTrusted && qispatchEvent(this.dataset.action, { cancelable: true }) && bsmodal.hide());
+        })
       });
       
-      return self;
-    };
-    
-    this.scrollable = function scrollable(bool) {
-      if (typeof bool === "boolean") bool ? ModalDialog.classList.add("modal-dialog-scrollable") : ModalDialog.classList.remove("modal-dialog-scrollable");
-      return self;
-    };
-    
-    this.fullscreen = function fullscreen(opt) {
-      opt = strParse(opt).toLowerCase();
-      opt = ["sm-down", "md-down", "lg-down", "xl-down", "xxl-down"].find(val => opt === val);
-      opt = `modal-fullscreen${opt?`-${opt}`:""}`;
+      ctx
+        .theme(options.theme)
+        .icon(options.icon)
+        .title(options.title).content(options.content)
+        .btnLabels(options.btnLabels)
       
-      return ModalDialog.classList.add(opt), self;
-    };
-    
-    this.theme = function theme(str) {
-      switch (strParse(str).toLowerCase()) {
-        case "dark":
-          el.dataset.bsTheme = str;
-          BtnCancel.classList.add("btn-outline-light");
-          BtnConfirm.classList.add("btn-outline-light");
-          break;
-          
-        case "info":
-          el.dataset.bsTheme = str;
-          BtnDismiss.dataset.bsTheme = "light";
-          BtnCancel.classList.add("btn-outline-dark");
-          BtnConfirm.classList.add("btn-outline-dark");
-          ModalContent.classList.add("text-bg-light");
-          ModalHeader.classList.add("text-bg-info");
-          ModalFooter.classList.add("text-bg-info");
-          break;
-          
-        case "danger":
-          el.dataset.bsTheme = str;
-          BtnCancel.classList.add("btn-outline-light");
-          BtnConfirm.classList.add("btn-outline-light");
-          ModalContent.classList.add("text-bg-light");
-          ModalHeader.classList.add("text-bg-danger");
-          ModalFooter.classList.add("text-bg-danger");
-          break;
-          
-        case "success":
-          el.dataset.bsTheme = str;
-          BtnCancel.classList.add("btn-outline-light");
-          BtnConfirm.classList.add("btn-outline-light");
-          ModalContent.classList.add("text-bg-light");
-          ModalHeader.classList.add("text-bg-success");
-          ModalFooter.classList.add("text-bg-success");
-          break;
-          
-        case "primary":
-          el.dataset.bsTheme = str;
-          BtnCancel.classList.add("btn-outline-light");
-          BtnConfirm.classList.add("btn-outline-light");
-          ModalContent.classList.add("text-bg-light");
-          ModalHeader.classList.add("text-bg-primary");
-          ModalFooter.classList.add("text-bg-primary");
-          break;
-          
-        case "warning":
-          el.dataset.bsTheme = str;
-          BtnDismiss.dataset.bsTheme = "light";
-          BtnCancel.classList.add("btn-outline-dark");
-          BtnConfirm.classList.add("btn-outline-dark");
-          ModalContent.classList.add("text-bg-light");
-          ModalHeader.classList.add("text-bg-warning");
-          ModalFooter.classList.add("text-bg-warning");
-          break;
-          
-        case "secondary":
-          el.dataset.bsTheme = str;
-          BtnCancel.classList.add("btn-outline-light");
-          BtnConfirm.classList.add("btn-outline-light");
-          ModalContent.classList.add("text-bg-light");
-          ModalHeader.classList.add("text-bg-secondary");
-          ModalFooter.classList.add("text-bg-secondary");
-          break;
-          
-        default: // => "light"
-          el.dataset.bsTheme = "light";
-          BtnCancel.classList.add("btn-outline-dark");
-          BtnConfirm.classList.add("btn-outline-dark");
-      }
-      
-      return self;
-    };
-    
-    this.theme( /* default theme is "light" */ );
-    
-    btnActions.forEach(btnAction => btnAction.addEventListener("click", function(evt) {
-      if (evt.isTrusted) {
-        dispatchEvent.btnAction = this.dataset.action;
-        modal.hide();
-      }
-    }));
-    
-    el.addEventListener("shown.bs.modal", function(evt) { dispatchEvent(evt.type); });
-    el.addEventListener("hidden.bs.modal", function(evt) {
-      if (dispatchEvent.btnAction) dispatchEvent(dispatchEvent.btnAction);
-      else dispatchEvent(evt.type);
-    });
-    
-    if (arguments.length > 1) this.title(title);
-    if (arguments.length > 2) this.body(body);
-    
-    if (modalType === "dialog") fn.createDialogModal();
-    else if (modalType === "confirm") fn.createConfirmModal();
-    else fn.createAlertModal();
-  };
+      createModal();
+    }
+  }
   
   const getModal = function(modalType) {
     let x = ++i;
     let el = document.createElement("div");
-    const html = (
-      `<!-- modal.js -->
-      <div class="modal fade" id="${modalType}Modal${x}" tabindex="-1" aria-labelledby="${modalType}ModalLabel${x}" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header border-bottom border-dark border-opacity-10 shadow">
-              <h1 class="modal-title fs-5 fw-bold" id="${modalType}ModalLabel${x}">Hello</h1>
-              <button type="button" name="dismiss" class="btn-close" aria-label="{{dismiss}}" data-btn="action"></button>
-            </div>
+    const html = `
+    <div class="modal fade" id="${modalType}Modal${x}" tabindex="-1" aria-labelledby="${modalType}ModalLabel${x}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header border-bottom border-dark border-opacity-10 shadow-sm">
+            <h1 class="modal-title d-flex align-items-center fs-5 fw-bold gap-0 column-gap-2" id="${modalType}ModalLabel${x}">
+              <span>Hello</span>
+            </h1>
+            
+            <button type="button" name="close" class="btn-close" aria-label="Close" data-btn="action"></button>
+          </div>
         
-            <div class="modal-body">
-              Glad to have you here!
-            </div>
-        
-            <div class="modal-footer border-top border-dark border-opacity-10">
-              <div class="w-100">
-                <div class="row gx-3 justify-content-end align-items-center">
-                  <div class="col-6 col-sm-auto">
-                    <button type="button" name="cancel" class="btn fw-bold shadow w-100" data-btn="action">{{cancel}}</button>
+          <div class="modal-body shadow-sm">
+            <!--div class="position-relative w-100 h-100"-->
+              <div class="d-table w-100 py-3" style="min-height: 75%;">
+                <div class="d-table-cell align-middle">
+                  <div class="text-center">
+                    <h5>Hello!</h5>
+                    <h3>Welcome to modal.bs.js</h3>
+                    <p class="m-0">view <a href="#">documentation</a></p>
                   </div>
+                </div>
+              </div>
+            <!--/div-->
+          </div>
+        
+          <div class="modal-footer border-top border-dark border-opacity-10">
+            <div class="w-100">
+              <div class="row gx-3 justify-content-end align-items-center">
+                <div class="col-6 col-sm-auto">
+                  <button type="button" name="cancel" class="btn text-truncate fw-bold shadow-sm w-100" data-btn="action">Cancel</button>
+                </div>
                       
-                  <div class="col-6 col-sm-auto">
-                    <button type="button" name="confirm" class="btn fw-bold shadow w-100" data-btn="action">{{confirm}}</button>
-                  </div>
+                <div class="col-6 col-sm-auto">
+                  <button type="button" name="confirm" class="btn text-truncate fw-bold shadow-sm w-100" data-btn="action">Confirm</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- /modal.js -->`
-    );
+    </div>`;
     
     el.innerHTML = html;
     el = el.children[0];
@@ -269,34 +307,34 @@
     return el;
   };
   
-  const strParse = str => typeof str === "string" ? str.trim() : "";
+  const strParse = value => typeof value === "string" ? value.trim() : "";
   const stripHtml = html => {
     const el = document.createElement("div");
     el.innerHTML = html;
     return el.textContent || el.innerText || "";
   };
   
-  Object.defineProperty(Modal.prototype, "alert", {
-    value: function AlertModal(title, content) {
-      if (this instanceof AlertModal) Object.assign(this, new Modal("alert", title, content));
-      else return new AlertModal(title, content);
+  Object.defineProperty(store, Symbol.toStringTag, { value: "Modal" });
+  Object.defineProperty(store, "alert", {
+    value: function ModalAlert() {
+      if (this instanceof ModalAlert) Object.assign(this, new Modal("alert", ...arguments));
+      else return new ModalAlert(...arguments);
     }
   });
   
-  Object.defineProperty(Modal.prototype, "dialog", {
-    value: function DialogModal(title, content) {
-      if (this instanceof DialogModal) Object.assign(this, new Modal("dialog", title, content));
-      else return new DialogModal(title, content);
+  Object.defineProperty(store, "dialog", {
+    value: function ModalDialog() {
+      if (this instanceof ModalDialog) Object.assign(this, new Modal("dialog", ...arguments));
+      else return new ModalDialog(...arguments);
     }
   });
   
-  Object.defineProperty(Modal.prototype, "confirm", {
-    value: function ConfirmModal(title, content) {
-      if (this instanceof ConfirmModal) Object.assign(this, new Modal("confirm", title, content));
-      else return new ConfirmModal(title, content);
+  Object.defineProperty(store, "confirm", {
+    value: function ModalConfirm() {
+      if (this instanceof ModalConfirm) Object.assign(this, new Modal("confirm", ...arguments));
+      else return new ModalConfirm(...arguments);
     }
   });
   
-  if ("__proto__" in Modal.prototype) Modal.prototype.__proto__ = null;
-  return Modal.prototype;
+  return store;
 });

@@ -1,7 +1,11 @@
 (function() {
   "use strict";
-  modal.alert.btnConfirmLabel = "OK";
-  modal.dialog.btnDismissLabel = "Dispensar";
-  modal.confirm.btnCancelLabel = "Cancelar";
-  modal.confirm.btnConfirmLabel = "Confirmar";
+  modal.defaults = {
+    btnLabels: {
+      okay: "OK",
+      close: "Fechar",
+      cancel: "Cancelar",
+      confirm: "Confirmar",
+    }
+  };
 })()
