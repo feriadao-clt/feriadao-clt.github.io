@@ -15,25 +15,22 @@ const title = {
   datas_comemorativas: 'Datas Comemorativas'
 };
 
-const dialog = modal.dialog({
-  size: "lg",
-  fullscreen: "lg-down"
-});
+const dialog = modal.dialog({ size: "lg", fullscreen: "lg-down" });
 
 $(document.body).on("click", "[data-nav-link]", function(evt) {
-  if (this.dataset.navLink === "about") dialog.icon({ name: "person-fill" }).title(title.author).content(author).show();
-  if (this.dataset.navLink === "license") dialog.icon({ name: "key-fill" }).title(title.license).content(`<pre>${license}</pre>`).show();
+  if (this.href === "modal:about") dialog.setIcon({ name: "person-fill" }).setTitle(title.author).setContent(author).show();
+  if (this.href === "modal:license") dialog.setIcon({ name: "key-fill" }).setTitle(title.license).setContent(`<pre>${license}</pre>`).show();
   
   return false;
 });
 
 $(document.body).on("click", "[data-holiday-type]", function(evt) {
-  dialog.icon({ name: "info-circle-fill" });
+  dialog.setIcon({ name: "info-circle-fill" });
   
-  if (this.dataset.holidayType === "estadual") dialog.title(title.feriado_estadual).content(feriadoEstadual).show();
-  else if (this.dataset.holidayType === "nacional") dialog.title(title.feriado_nacional).content(feriadoNacional).show();
-  else if (this.dataset.holidayType === "facultativo") dialog.title(title.ponto_facultativo).content(pontoFacultativo).show();
-  else if (this.dataset.holidayType === "comemorativa") dialog.title(title.datas_comemorativas).content(datasComemorativas).show();
+  if (this.dataset.holidayType === "estadual") dialog.setTitle(title.feriado_estadual).setContent(feriadoEstadual).show();
+  else if (this.dataset.holidayType === "nacional") dialog.setTitle(title.feriado_nacional).setContent(feriadoNacional).show();
+  else if (this.dataset.holidayType === "facultativo") dialog.setTitle(title.ponto_facultativo).setContent(pontoFacultativo).show();
+  else if (this.dataset.holidayType === "comemorativa") dialog.setTitle(title.datas_comemorativas).setContent(datasComemorativas).show();
   
   return false;
 });

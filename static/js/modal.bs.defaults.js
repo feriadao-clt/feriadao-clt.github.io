@@ -1,11 +1,11 @@
 (function() {
   "use strict";
   modal.defaults = {
-    btnLabels: {
+    buttonLabels: {
       okay: "OK",
-      close: "Fechar",
       cancel: "Cancelar",
       confirm: "Confirmar",
+      dismiss: "Fechar"
     }
   };
 })()
