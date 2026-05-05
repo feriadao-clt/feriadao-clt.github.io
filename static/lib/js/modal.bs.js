@@ -356,9 +356,9 @@
   };
   
   const strParse = value => typeof value === "string" ? value.trim() : "";
-  const stripHtml = html => {
+  const stripHtml = value => {
     const el = document.createElement("div");
-    el.innerHTML = html;
+    el.innerHTML = typeof value === "string" ? value.trim() : "";
     return el.textContent || el.innerText || "";
   };
   

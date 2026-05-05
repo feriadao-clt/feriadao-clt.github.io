@@ -163,9 +163,9 @@
             </svg>
             
             <h1 class="text-warning fw-bold lh-1 m-0">Feriadão CLT</h1>
-            <p class="fw-bold display-1 text-info">
+            <p class="fw-bold display-1 text-info" data-date-year>
               <script>
-                document.write((new Date()).getFullYear());
+                document.body.querySelector("p[data-date-year]").append((new Date()).getFullYear());
               </script>
             </p>
             
