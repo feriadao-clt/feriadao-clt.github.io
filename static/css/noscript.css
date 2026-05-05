@@ -1,0 +1,7 @@
+#on-js #noscript {
+  display: none;
+}
+
+#off-js #layout {
+  display: none;
+}

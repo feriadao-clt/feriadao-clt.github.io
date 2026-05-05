@@ -1,0 +1,68 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+.splash-screen {
+  width: 100%;
+  height: 100%;
+  display: table;
+  min-height: 100%;
+}
+
+.splash-screen>div {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.splash-screen-middle {
+  vertical-align: middle !important;
+}
+
+.splash-screen-bottom {
+  vertical-align: bottom !important;
+}
+
+.splash-screen-container {
+  margin: 0 auto;
+  padding: 16px;
+}
+
+@media (min-width: 576px) {
+  .splash-screen-sm-middle {
+    vertical-align: middle !important;
+  }
+  
+  .splash-screen-sm-bottom {
+    vertical-align: bottom !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .splash-screen-md-middle {
+    vertical-align: middle !important;
+  }
+  
+  .splash-screen-md-bottom {
+    vertical-align: bottom !important;
+  }
+  
+  .splash-screen-container {
+    width: 434px;
+  }
+}
+
+@media (min-width: 992px) {
+  .splash-screen-lg-middle {
+    vertical-align: middle !important;
+  }
+  
+  .splash-screen-lg-bottom {
+    vertical-align: bottom !important;
+  }
+  
+  .splash-screen-container {
+    width: 546px;
+  }
+}
