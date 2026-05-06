@@ -7,6 +7,11 @@
   
   /** Requires: Bootstrap v5.3.8 **/
   
+  // => Check browser supports…
+  if (false !== document.createElement("script").noModule) return null;
+  // => Check bootstrap supports…
+  if (typeof bootstrap !== "object" || bootstrap == null) return null;
+  
   let count = 0;
   const store = Object.create(null);
   const helpers = Object.create(null);
@@ -14,15 +19,41 @@
   class Emitter {
     constructor() {
       const ctx = this;
-      const events = Object.create(null);
+      const events = new Map();
       const isEvents = value => (((value instanceof Event) || (value instanceof CustomEvent)) && value);
       const isString = value => ((typeof value === "string") && value.trim());
       const isFunction = value => ((typeof value === "function") && value);
-      const cancelEvents = event => (event.stopImmediatePropagation(), event.preventDefault(), !event.returnValue);
+      const eventStore = type => {
+        const event = isString(type);
+        const options = Object.create(null);
+        
+        options.addListener = listener => {
+          if (isFunction(listener) && event) {
+            events.has(event) || events.set(event, []);
+            events.set(event, options.getListeners(listener));
+          }
+        };
+        
+        options.getListeners = listener => {
+          const listeners = events.has(event) ? events.get(event) : [];
+          isFunction(listener) && listeners.push(listener);
+          return listeners;
+        };
+        
+        options.removeListener = targetListener => {
+          if (events.has(event)) {
+            const listeners = options.getListeners();
+            if (isFunction(targetListener)) events.set(event, listeners.filter(listener => listener !== targetListener)) && !events.get(event).length && events.delete(event);
+            else events.delete(event);
+          }
+        };
+        
+        return options;
+      };
       
       ctx.on = function on(type, listener) {
-        const event = isString(type);
-        return (((event && isFunction(listener)) && (events[event] || (events[event] = [])).push(listener)), ctx);
+        eventStore(type).addListener(listener);
+        return ctx;
       };
       
       ctx.one = function one(type, listener) {
@@ -31,18 +62,18 @@
       };
       
       ctx.off = function off(type, targetListener) {
-        const event = isString(type);
-        
-        if (!arguments.length) Object.keys(events).forEach(event => delete events[event]);
-        else if (arguments.length === 1) event in events && delete events[event];
-        else event in events && (events[event] = events[event].filter(listener => listener !== targetListener));
+        if (!arguments.length) events.clear();
+        else if (arguments.length > 1) eventStore(type).removeListener(targetListener);
+        else eventStore(type).removeListener();
         return ctx;
       };
       
       ctx.emit = function emit(type, ...args) {
         const event = isEvents(type) || ctx.createEvents(type);
-        const listeners = events[event.type];
-        return (listeners ? args.unshift(event) && listeners.every(listener => ((false === listener.apply(this, args) && cancelEvents(event)), event.returnValue)) : true);
+        const listeners = eventStore(event.type).getListeners();
+        
+        event.destroy = function destroy() { return [!event.stopImmediatePropagation(), !event.preventDefault(), event.returnValue].pop(); };
+        return args.unshift(event) && listeners.every(listener => false === listener.apply(this, args) ? event.destroy() : event.returnValue);
       };
       
       ctx.createEvents = function createEvents(type, options) {
