@@ -4,13 +4,13 @@
     global.modal = factory();
 })(this, function() {
   "use strict";
-  
-  /** Requires: Bootstrap v5.3.8 **/
+
+  /** Requires: Bootstrap 5 **/
   
   // => Check browser supports…
-  if (false !== document.createElement("script").noModule) return null;
+  if (false !== document.createElement("script").noModule) throw new Error("[modal.bs.js] Browser not compatible. Update your browser to the latest version!");
   // => Check bootstrap supports…
-  if (typeof bootstrap !== "object" || bootstrap == null) return null;
+  if (typeof bootstrap !== "object" || bootstrap === null) throw new Error('[modal.bs.js] "Bootstrap" is missing. Please fix this!');
   
   let count = 0;
   const store = Object.create(null);
