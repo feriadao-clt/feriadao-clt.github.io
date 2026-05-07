@@ -27,24 +27,26 @@
         const options = Object.create(null);
         
         options.addListener = listener => {
-          if (isFunction(listener) && event) {
-            events.has(event) || events.set(event, []);
-            events.set(event, options.getListeners(listener));
-          }
+          isFunction(listener) && event && options.setListener(listener);
+          return options;
         };
         
-        options.getListeners = listener => {
-          const listeners = events.has(event) ? events.get(event) : [];
-          isFunction(listener) && listeners.push(listener);
-          return listeners;
+        options.setListener = listener => {
+          const listeners = options.getListeners();
+          listeners.push(listener);
+          events.set(event, listeners);
+          return options;
         };
         
-        options.removeListener = targetListener => {
-          if (events.has(event)) {
-            const listeners = options.getListeners();
-            if (isFunction(targetListener)) events.set(event, listeners.filter(listener => listener !== targetListener)) && !events.get(event).length && events.delete(event);
-            else events.delete(event);
-          }
+        options.getListeners = () => events.has(event) ? events.get(event) : [];
+        options.removeListener = (...args) => {
+          const removeListener = (listeners, targetListener) => {
+            listeners = listeners.filter(listener => listener !== targetListener);
+            events.set(event, listeners) && !events.get(event).length && events.delete(event);
+          };
+          
+          if (events.has(event)) args.length ? isFunction(args[0]) && removeListener(options.getListeners(), args[0]) : events.delete(event);
+          return options;
         };
         
         return options;
@@ -62,8 +64,7 @@
       
       ctx.off = function off(type, targetListener) {
         if (!arguments.length) events.clear();
-        else if (arguments.length > 1) eventStore(type).removeListener(targetListener);
-        else eventStore(type).removeListener();
+        else eventStore(type).removeListener(...Array.from(arguments).slice(1));
         return ctx;
       };
       
