@@ -32,20 +32,13 @@
         };
         
         options.setListener = listener => {
-          const listeners = options.getListeners();
-          listeners.push(listener);
-          events.set(event, listeners);
+          events.set(event, options.getListeners().concat(listener));
           return options;
         };
         
         options.getListeners = () => events.has(event) ? events.get(event) : [];
         options.removeListener = (...args) => {
-          const removeListener = (listeners, targetListener) => {
-            listeners = listeners.filter(listener => listener !== targetListener);
-            events.set(event, listeners) && !events.get(event).length && events.delete(event);
-          };
-          
-          if (events.has(event)) args.length ? isFunction(args[0]) && removeListener(options.getListeners(), args[0]) : events.delete(event);
+          events.has(event) ? (args.length ? isFunction(args[0]) && events.set(event, options.getListeners().filter(listener => listener !== args[0])) && !events.get(event).length && events.delete(event) : events.delete(event)) : null;
           return options;
         };
         
@@ -96,9 +89,11 @@
       if (!["alert", "dialog", "confirm"].includes(modal_type)) modal_type = "alert";
       
       const ctx = this;
+      const emit = this.emit;
       const Modal = getModal(modal_type);
       const modal_config = Object.create(null);
       
+      const destroyEvents = (evt, cancel) => (evt.stopImmediatePropagation(), ((cancel === true) && evt.preventDefault()), true);
       const modal_options = (() => {
         let size, options, fullscreen, breakpoint, breakpoints;
         const defaults = Object.assign(Object.create(null), store.defaults);
@@ -233,12 +228,10 @@
         return ctx;
       };
       
-      const stopImmediatePropagation = (evt, cancel) => (evt.stopImmediatePropagation(), ((cancel === true) && evt.preventDefault()), true);
-      
       // => modal controller
       ctx.show = function show() { return modal.show(), ctx; };
       ctx.hide = function hide() { return modal.hide(), ctx; };
-      ctx.dispose = function dispose() { modal.dispose(), Modal.remove(), ctx.emit("dispose.bs.modal"), ctx.off(); };
+      ctx.dispose = function dispose() { modal.dispose(), Modal.remove(), emit.call(ctx, "dispose.bs.modal"), ctx.off(); };
       
       ctx.buttonLabels = function buttonLabels(value) {
         const btnNames = Object.keys(Object.assign(Object.create(null), value));
@@ -305,21 +298,24 @@
         return ctx;
       };
       
-      Modal.addEventListener("show.bs.modal", function(evt) { stopImmediatePropagation(evt) && ctx.emit(evt); });
-      Modal.addEventListener("hide.bs.modal", function(evt) { stopImmediatePropagation(evt) && ctx.emit(evt); });
-      Modal.addEventListener("shown.bs.modal", function(evt) { stopImmediatePropagation(evt) && ctx.emit(evt); });
-      Modal.addEventListener("hidden.bs.modal", function(evt) { stopImmediatePropagation(evt) && ctx.emit(evt); });
+      delete this.emit;
+      
+      Modal.addEventListener("show.bs.modal", function(evt) { destroyEvents(evt) && emit.call(ctx, evt); });
+      Modal.addEventListener("hide.bs.modal", function(evt) { destroyEvents(evt) && emit.call(ctx, evt); });
+      Modal.addEventListener("shown.bs.modal", function(evt) { destroyEvents(evt) && emit.call(ctx, evt); });
+      Modal.addEventListener("hidden.bs.modal", function(evt) { destroyEvents(evt) && emit.call(ctx, evt); });
+      
       Modal.querySelectorAll('button[data-btn="action"]').forEach(btn => {
         btn.addEventListener("click", function(realEvent) {
           const one = evt => {
             evt.realEvent = realEvent;
-            stopImmediatePropagation(evt);
+            destroyEvents(evt);
             Modal.removeEventListener(evt.type, one);
-            ctx.emit(evt) && modal.hide();
+            emit.call(ctx, evt) && modal.hide();
           };
           
           const event = ctx.createEvents(btn.dataset.action, { cancelable: true });
-          stopImmediatePropagation(realEvent, true);
+          destroyEvents(realEvent, true);
           Modal.addEventListener(event.type, one), Modal.dispatchEvent(event);
         });
       });
