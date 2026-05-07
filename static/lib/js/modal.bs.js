@@ -4,7 +4,7 @@
     global.modal = factory();
 })(this, function() {
   "use strict";
-
+  
   /** Requires: Bootstrap 5 **/
   
   // => Check browser supports…
@@ -14,7 +14,6 @@
   
   let count = 0;
   const store = Object.create(null);
-  const helpers = Object.create(null);
   
   class Emitter {
     constructor() {
