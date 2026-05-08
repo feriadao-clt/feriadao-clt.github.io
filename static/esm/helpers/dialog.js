@@ -15,7 +15,7 @@ const title = {
   datas_comemorativas: 'Datas Comemorativas'
 };
 
-const dialog = modal.dialog({ size: "lg", fullscreen: "lg-down" });
+const dialog = modal.dialog({ size: "lg", fullscreen: "md-down" });
 
 $(document.body).on("click", "[data-nav-link]", function(evt) {
   if (this.href === "modal:about") dialog.setIcon({ name: "person-fill" }).setTitle(title.author).setContent(author).show();

@@ -1,7 +1,9 @@
-#on-js #noscript {
+/* if JavaScript is Enabled */
+[data-js="on"] #noscript {
   display: none;
 }
 
-#off-js #layout {
+/* if JavaScript is Disabled */
+[data-js="off"] #layout {
   display: none;
 }

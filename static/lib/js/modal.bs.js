@@ -10,7 +10,7 @@
   // => Check browser supports…
   if (false !== document.createElement("script").noModule) throw new Error("[modal.bs.js] Browser not compatible. Update your browser to the latest version!");
   // => Check bootstrap supports…
-  if (typeof bootstrap !== "object" || bootstrap === null) throw new Error('[modal.bs.js] "Bootstrap" is missing. Please fix this!');
+  if (typeof bootstrap !== "object" || bootstrap === null) throw new Error('[modal.bs.js] "bootstrap" is missing. Please fix this!');
   
   let count = 0;
   const store = Object.create(null);
@@ -93,7 +93,7 @@
       const Modal = getModal(modal_type);
       const modal_config = Object.create(null);
       
-      const destroyEvents = (evt, cancel) => (evt.stopImmediatePropagation(), ((cancel === true) && evt.preventDefault()), true);
+      const destroyEvents = (evt, cancel) => [!evt.stopImmediatePropagation(), ((cancel === true) && !evt.preventDefault()), true].pop();
       const modal_options = (() => {
         let size, options, fullscreen, breakpoint, breakpoints;
         const defaults = Object.assign(Object.create(null), store.defaults);
@@ -269,7 +269,7 @@
           if (iconame) {
             ModalTitle = ModalTitle.querySelector("i") || (ModalTitle.prepend(document.createElement("i")), ModalTitle.querySelector("i"));
             ModalTitle.className = `bi bi-${iconame}${breakpoints.includes(breakpoint) ? ` text-${breakpoint}` : ""}`;
-            ModalTitle.setAttribute("aria-label", "icon: " + iconame.split("-").join(" "));
+            ModalTitle.setAttribute("aria-label", iconame.split("-").concat("icon").join(" "));
           }
         });
         
@@ -331,14 +331,14 @@
   }
   
   const getModal = function(modal_type) {
-    let x = ++count;
+    let i = ++count;
     let el = document.createElement("div");
     const html = `
-    <div class="modal fade" id="modal-${modal_type}-${x}" tabindex="-1" aria-labelledby="modal-${modal_type}-label-${x}" aria-hidden="true">
+    <div class="modal fade" id="modal-${modal_type}-${i}" tabindex="-1" aria-labelledby="modal-${modal_type}-label-${i}" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header shadow border-0">
-            <h1 class="modal-title d-flex align-items-center fs-5 fw-bold gap-0 column-gap-2" id="modal-${modal_type}-label-${x}">
+            <h1 class="modal-title d-flex align-items-center fs-5 fw-bold gap-0 column-gap-2" id="modal-${modal_type}-label-${i}">
               <span>Hello</span>
             </h1>
             

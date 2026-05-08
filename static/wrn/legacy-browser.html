@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html id="off-js" lang="en">
+<html lang="en" data-js="off">
 
 <head>
   <meta charset="UTF-8">
@@ -13,12 +13,7 @@
   <link rel="stylesheet" href="/static/css/splash-screen.css" crossorigin="anonymous" type="text/css">
   <link rel="stylesheet" href="/static/css/noscript.css" crossorigin="anonymous" type="text/css">
   
-  <script type="text/javascript" charset="UTF-8">
-    (function() {
-      false === document.createElement("script").noModule && window.location.replace("/");
-      document.documentElement.id = "on-js";
-    })();
-  </script>
+  <script src="/static/js/legacy-browser.js" type="text/javascript" charset="UTF-8" crossorigin="anonymous"></script>
   
   <title>Legacy Browser</title>
 </head>

@@ -110,13 +110,13 @@ $(window).on("load", function(evt) {
   $(".powered-by").on("animationend", () => {
     for (let i = 1900; i < 2200; i++) {
       $('[data-select="YEAR"]').append(
-        `<option value="${i}"${i === moment().year() ? " selected":""}>ANO: ${i}</option>`
+        `<option value="${i}"${i === moment().year() ? " selected":""}>ANO ${i}</option>`
       );
     }
     
     UF.forEach(uf => {
       $('[data-select="UF"] optgroup[data-name="UF"]').append(
-        `<option value="${uf.sigla}">Estado: ${uf.nome}</option>`
+        `<option value="${uf.sigla}">${uf.nome}</option>`
       );
     });
     
