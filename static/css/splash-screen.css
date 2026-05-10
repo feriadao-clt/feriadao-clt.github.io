@@ -13,6 +13,7 @@ body {
 
 .splash-screen>div {
   display: table-cell;
+  text-align: center;
   vertical-align: top;
 }
 
@@ -25,8 +26,9 @@ body {
 }
 
 .splash-screen-container {
+  width: 100%;
   margin: 0 auto;
-  padding: 16px;
+  display: block;
 }
 
 @media (min-width: 576px) {
@@ -36,6 +38,10 @@ body {
   
   .splash-screen-sm-bottom {
     vertical-align: bottom !important;
+  }
+  
+  .splash-screen-container {
+    width: 60%;
   }
 }
 
@@ -49,7 +55,7 @@ body {
   }
   
   .splash-screen-container {
-    width: 575.98px;
+    width: 50%;
   }
 }
 
@@ -63,6 +69,6 @@ body {
   }
   
   .splash-screen-container {
-    width: 767.98px;
+    width: 40%;
   }
 }

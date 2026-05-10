@@ -4,8 +4,6 @@ import feriadoEstadual from "./templates/feriado-estadual.faq.js";
 import pontoFacultativo from "./templates/ponto-facultativo.faq.js";
 import datasComemorativas from "./templates/datas-comemorativas.faq.js";
 
-const res = await fetch("/LICENSE");
-const license = await res.text();
 const title = {
   author: 'Author',
   license: 'LICENSE',
@@ -16,10 +14,11 @@ const title = {
 };
 
 const dialog = modal.dialog({ size: "lg", fullscreen: "md-down" });
+const license = '<iframe src="/LICENSE.txt" class="position-relative w-100 h-100" frameborder="0"></iframe>';
 
-$(document.body).on("click", "[data-nav-link]", function(evt) {
-  if (this.href === "modal:about") dialog.setIcon({ name: "person-fill" }).setTitle(title.author).setContent(author).show();
-  if (this.href === "modal:license") dialog.setIcon({ name: "key-fill" }).setTitle(title.license).setContent(`<pre>${license}</pre>`).show();
+$(document.body).on("click", "[data-link]", function(evt) {
+  if (this.dataset.link === "about-me") dialog.setIcon({ name: "person-fill" }).setTitle(title.author).setContent(author).show();
+  if (this.dataset.link === "license-doc") dialog.setIcon({ name: "key-fill" }).setTitle(title.license).setContent(license).show();
   
   return false;
 });
